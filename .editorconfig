@@ -1,0 +1,9 @@
+root=true
+
+[*.{json,jsonc}]
+indent_style = tab
+indent_size = 2
+
+[*.z*]
+indent_style = space
+indent_size = 2

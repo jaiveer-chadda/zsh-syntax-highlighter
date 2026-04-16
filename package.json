@@ -1,25 +1,24 @@
 {
-  "name": "zsh-syntax-highlighter",
-  "displayName": "zsh-syntax-highlighter",
-  "description": "",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.116.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "contributes": {
-    "languages": [{
-      "id": "zsh",
-      "aliases": ["zsh", "zsh"],
-      "extensions": [".zsh",".zshrc",".zprofile",".zshenv",".zlogin",".zlogout"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "zsh",
-      "scopeName": "source.zsh",
-      "path": "./syntaxes/zsh.tmLanguage.json"
-    }]
-  }
+	"name"				: "zsh-syntax-highlighter",
+	"displayName"	: "ZSH Syntax Highlighter",
+	"description"	: "",
+	"version"			: "0.0.1",
+	"engines"			: { "vscode": "^1.116.0" },
+	"categories"	: [ "Programming Languages" ],
+	"contributes"	: {
+
+		"languages": [{
+			"id"						:		"zsh",
+			"aliases"				: [ "zsh", "z shell", "zshell" ],
+			"extensions"		: [ ".zsh", ".zshrc", ".zprofile", ".zshenv", ".zlogin", ".zlogout" ],
+			"configuration"	: "./language-configuration.json"
+		}],
+
+		"grammars": [{
+			"language"	: "zsh",
+			"scopeName"	: "source.zsh",
+			"path"			: "./syntaxes/zsh.tmLanguage.json"
+		}]
+
+	}
 }
