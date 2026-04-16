@@ -1,0 +1,7 @@
+.DS_Store
+.vscodeignore
+.vscode/
+.vscode-test/
+._*
+tests/_*
+vsc-extension-quickstart.md
