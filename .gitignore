@@ -3,5 +3,5 @@
 .vscode/
 .vscode-test/
 ._*
-tests/_*
+tests/
 vsc-extension-quickstart.md
