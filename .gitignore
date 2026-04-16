@@ -6,3 +6,4 @@
 tests/*.zsh
 !tests/.vscode/settings.json
 vsc-extension-quickstart.md
+__pycache__

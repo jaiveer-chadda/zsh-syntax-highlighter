@@ -2,7 +2,8 @@
 
 from typing import Final
 
-type json = dict[str, json | str] | list[json]
+from types_ import json
+
 
 JSON_SCHEMA: Final[str] = "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
 
@@ -17,13 +18,11 @@ HEADER_JSON: Final[json] = {
 
 def compile():
     output: json = {}
-
     output |= HEADER_JSON
 
-    # `patterns` will be filled in by a future function
-    patterns: list[str]
-    output["patterns"] = [ {"include": f"#{pattern}" } for pattern in patterns ]
+    # `top_level_patterns` will be filled in by a future function
+    top_level_patterns: list[str]
+    output["top_level_patterns"] = [ {"include": f"#{pattern}" } for pattern in top_level_patterns ]
 
     ...
-
     return output
