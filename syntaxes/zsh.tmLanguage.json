@@ -1,31 +1,96 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "zsh",
-	"scopeName": "source.zsh",
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "zsh",
+  "scopeName": "source.zsh",
 
-	"patterns": [
-		{ "include": "#keywords" },
-		{ "include": "#strings"  }
-	],
+  "patterns": [
+    { "include": "#keywords"   },
+    { "include": "#precommand" },
+    { "include": "#comments"   },
+    { "include": "#strings"    }
+  ],
 
-	"repository": {
+  "repository": {
 
-		"keywords": {
-			"patterns": [{
-				"name"	: "keyword.control.zsh",
-				"match"	: "\\b(if|while|for|return)\\b"
-			}]
-		},
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.do.zsh"      , "match": "\\bdo\\b"       },
+        { "name": "keyword.control.done.zsh"    , "match": "\\bdone\\b"     },
+  
+        { "name": "keyword.control.for.zsh"     , "match": "\\bfor\\b"      },
+        { "name": "keyword.control.in.zsh"      , "match": "\\bin\\b"       },
+        { "name": "keyword.control.case.zsh"    , "match": "\\bcase\\b"     },
+        { "name": "keyword.control.esac.zsh"    , "match": "\\besac\\b"     },
+  
+        { "name": "keyword.control.while.zsh"   , "match": "\\bwhile\\b"    },
+        { "name": "keyword.control.until.zsh"   , "match": "\\buntil\\b"    },
+        { "name": "keyword.control.repeat.zsh"  , "match": "\\brepeat\\b"   },
+        { "name": "keyword.control.select.zsh"  , "match": "\\bselect\\b"   },
 
-		"strings": {
-			"name": "string.quoted.double.zsh",
-			"begin"	: "\"",
-			"end"		: "\"",
-			"patterns": [{
-					"name"	: "constant.character.escape.zsh",
-					"match"	: "\\\\."
-			}]
-		}
+        { "name": "keyword.control.foreach.zsh" , "match": "\\bforeach\\b"  },
+        { "name": "keyword.control.end.zsh"     , "match": "\\bend\\b"      },
 
-	}
+        { "name": "keyword.control.if.zsh"      , "match": "\\bif\\b"       },
+        { "name": "keyword.control.then.zsh"    , "match": "\\bthen\\b"     },
+        { "name": "keyword.control.elif.zsh"    , "match": "\\belif\\b"     },
+        { "name": "keyword.control.else.zsh"    , "match": "\\belse\\b"     },
+        { "name": "keyword.control.fi.zsh"      , "match": "\\bfi\\b"       },
+        
+        { "name": "keyword.control.always.zsh"  , "match": "\\balways\\b"   },
+
+        { "name": "keyword.control.function.zsh", "match": "\\bfunction\\b" }
+
+      ]
+    },
+
+    "precommand": {
+      "patterns": [
+        { "name": "precommand.hyphen.zsh"   , "match": "\\b-\\b"         },
+        { "name": "precommand.builtin.zsh"  , "match": "\\bbuiltin\\b"   },
+        { "name": "precommand.command.zsh"  , "match": "\\bcommand\\b"   },
+        { "name": "precommand.exec.zsh"     , "match": "\\bexec\\b"      },
+        { "name": "precommand.nocorrect.zsh", "match": "\\bnocorrect\\b" },
+        { "name": "precommand.noglob.zsh"   , "match": "\\bnoglob\\b"    }
+
+      ]
+    },
+
+    "comments": {
+      "patterns": [
+        { "name": "punctuation.definition.comment.zsh", "match": "(?<=(^|\\s))#"    },
+        { "name": "comment.line.number-sign.zsh"      , "match": "(?<=(^|\\s)#).*$" }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.zsh",
+          "begin": "\"", "end": "\"",
+          "patterns": [{ "name": "constant.character.escape.zsh", "match": "\\\\[abcefnrtuv\"]" }]
+        },
+        {
+          "name": "string.quoted.single.zsh",
+          "begin": "(?<!\\$)'", "end": "'"
+        },
+        {
+          "name": "string.quoted.single.dollar.zsh",
+          "begin": "\\$'", "end": "'",
+          "patterns": [
+            { "name": "constant.character.escape.graphic.reset.zsh"      , "match": "\\\\e\\[0m"        },
+            { "name": "constant.character.escape.graphic.fg.black.zsh"   , "match": "\\\\e\\[30m"       },
+            { "name": "constant.character.escape.graphic.fg.red.zsh"     , "match": "\\\\e\\[31m"       },
+            { "name": "constant.character.escape.graphic.fg.green.zsh"   , "match": "\\\\e\\[32m"       },
+            { "name": "constant.character.escape.graphic.fg.yellow.zsh"  , "match": "\\\\e\\[33m"       },
+            { "name": "constant.character.escape.graphic.fg.blue.zsh"    , "match": "\\\\e\\[34m"       },
+            { "name": "constant.character.escape.graphic.fg.magenta.zsh" , "match": "\\\\e\\[35m"       },
+            { "name": "constant.character.escape.graphic.fg.cyan.zsh"    , "match": "\\\\e\\[36m"       },
+            { "name": "constant.character.escape.graphic.fg.white.zsh"   , "match": "\\\\e\\[37m"       },
+            { "name": "constant.character.escape.zsh"                    , "match": "\\\\[abcefnrtuv']" }
+          ]
+        }
+      ]
+    }
+
+  }
 }

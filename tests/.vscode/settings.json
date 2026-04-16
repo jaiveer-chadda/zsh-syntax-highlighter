@@ -1,0 +1,35 @@
+{
+	"workbench.colorCustomizations": {
+		"activityBar.activeBackground": "#5dcfe4",
+		"activityBar.background": "#5dcfe4",
+		"activityBar.foreground": "#15202b",
+		"activityBar.inactiveForeground": "#15202b99",
+		"commandCenter.border": "#15202b99",
+		"editorGroup.border": "#5dcfe4",
+		"sash.hoverBorder": "#5dcfe4",
+		"sideBar.border": "#5dcfe4",
+		"tab.activeBorder": "#5dcfe4",
+		"titleBar.activeBackground": "#5dcfe4",
+		"titleBar.activeForeground": "#15202b",
+		"titleBar.border": "#5dcfe4",
+		"titleBar.inactiveBackground": "#5dcfe499",
+		"titleBar.inactiveForeground": "#15202b99"
+	},
+	"peacock.color": "#89DCEB",
+
+	"editor.tokenColorCustomizations": {
+
+		"textMateRules": [
+			{ "scope": "constant.character.escape.graphic.reset.zsh"     , "settings": { "foreground": "#6B6B8B", "fontStyle": "underline" } },
+			{ "scope": "constant.character.escape.graphic.fg.black.zsh"  , "settings": { "foreground": "#4B4B5B" } },
+			{ "scope": "constant.character.escape.graphic.fg.red.zsh"    , "settings": { "foreground": "#F38BA8" } },
+			{ "scope": "constant.character.escape.graphic.fg.green.zsh"  , "settings": { "foreground": "#76F371" } },
+			{ "scope": "constant.character.escape.graphic.fg.yellow.zsh" , "settings": { "foreground": "#F9E2AF" } },
+			{ "scope": "constant.character.escape.graphic.fg.blue.zsh"   , "settings": { "foreground": "#89B4FA" } },
+			{ "scope": "constant.character.escape.graphic.fg.magenta.zsh", "settings": { "foreground": "#978CF7" } },
+			{ "scope": "constant.character.escape.graphic.fg.cyan.zsh"   , "settings": { "foreground": "#52C8D6" } },
+			{ "scope": "constant.character.escape.graphic.fg.white.zsh"  , "settings": { "foreground": "#B8C0E0" } },
+		]
+	}
+
+}

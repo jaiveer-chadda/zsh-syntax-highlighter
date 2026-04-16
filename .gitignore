@@ -1,7 +1,8 @@
 .DS_Store
 .vscodeignore
-.vscode/
+.vscode/*
 .vscode-test/
 ._*
-tests/
+tests/*.zsh
+!tests/.vscode/settings.json
 vsc-extension-quickstart.md
