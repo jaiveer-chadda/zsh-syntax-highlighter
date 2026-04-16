@@ -1,9 +1,14 @@
 root=true
 
-[*.{json,jsonc}]
+[*]
 indent_style = space
+indent_size = 4
+
+[*.{json,jsonc}]
 indent_size = 2
 
 [*.z*]
-indent_style = space
 indent_size = 2
+
+[*.py]
+indent_size = 4
