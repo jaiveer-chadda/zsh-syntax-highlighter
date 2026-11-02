@@ -1,9 +1,9 @@
 .DS_Store
 .vscodeignore
-.vscode/*
+.vscode/
 .vscode-test/
 ._*
-tests/*.zsh
+tests
 !tests/.vscode/settings.json
 vsc-extension-quickstart.md
 __pycache__

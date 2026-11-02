@@ -14,9 +14,9 @@
 
 	// symbols that are auto closed when typing
 	"autoClosingPairs": [
-		{ "open": "{" , "close": "}" },
-		{ "open": "[" , "close": "]" },
-		{ "open": "(" , "close": ")" },
+		["{", "}"],
+		["[", "]"],
+		["(", ")"],
 		{ "open": "\"", "close": "\"", "notIn": [ "comment" ] },
 		{ "open": "'" , "close": "'" , "notIn": [ "comment" ] },
 		{ "open": "`" , "close": "`" , "notIn": [ "comment" ] },
@@ -30,5 +30,13 @@
 		[ "\"", "\"" ],
 		[ "'" , "'"  ],
 		[ "`" , "`"  ],
-	]
+	],
+
+  "folding": {
+    "markers": {
+      "start": "^\\s*##?region\\b.*",
+      "end": "^\\s*##?endregion\\b.*"
+    }
+  }
+
 }
