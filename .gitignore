@@ -1,9 +1,23 @@
+# zsh-syntax/.gitignore
+
+# Project Files
+out/
+build/
+tests/
+archive/
+vsc-extension-quickstart.md
+
+# System Files
 .DS_Store
-.vscodeignore
+Icon?
+
+# IDEs
+.idea/
 .vscode/
 .vscode-test/
-._*
-tests
-!tests/.vscode/settings.json
-vsc-extension-quickstart.md
-__pycache__
+.vscodeignore
+
+# Other
+~$*
+*_temp*
+*.tmp

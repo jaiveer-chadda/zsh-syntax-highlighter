@@ -1,17 +1,23 @@
 {
-	"name"				: "zsh-syntax-highlighter",
+	"name"				: "zsh-syntax",
 	"displayName"	: "ZSH Syntax Highlighter",
 	"description"	: "",
 	"version"			: "0.0.1",
-	"engines"			: { "vscode": "^1.116.0" },
+
+	"engines"			: { "vscode": "^1.144.0" },
 	"categories"	: [ "Programming Languages" ],
+
 	"contributes"	: {
 
 		"languages": [{
-			"id"						:		"zsh",
-			"aliases"				: [ "zsh", "z shell", "zshell" ],
-			"extensions"		: [ ".zsh", ".zshrc", ".zprofile", ".zshenv", ".zlogin", ".zlogout" ],
-			"configuration"	: "./language-configuration.json"
+			"id"							:		"zsh",
+			"aliases"					:	[ "zsh", "z shell", "zshell" ],
+			"configuration"		:		"./language-configuration.json",
+
+			"extensions"			:	[ ".zsh" ],
+			"filenames"				:	[ ".zshrc", ".zprofile", ".zshenv", ".zlogin", ".zlogout" ],
+			"filenamePatterns":	[ "{.,}z{sh{rc,env},profile,log{in,out}}" ],
+			"firstLine"				:		"^#!/(?:(?:usr/)?bin/|usr/bin/env )zsh"
 		}],
 
 		"grammars": [{

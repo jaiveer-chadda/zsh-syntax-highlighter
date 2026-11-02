@@ -1,6 +1,6 @@
-# zsh-syntax-highlighter README
+# zsh-syntax README
 
-This is the README for your extension "zsh-syntax-highlighter". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "zsh-syntax". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 
