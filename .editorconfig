@@ -4,7 +4,7 @@ root=true
     indent_style = space
     indent_size = 4
 
-[*.{json,jsonc}]
+[*.{json,jsonc}{.bak,}]
     indent_style = tab
     indent_size = 2
 

@@ -1,0 +1,1646 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "zsh",
+	"scopeName": "source.zsh",
+
+	"fileTypes": [ ".zsh" ],
+	"firstLineMatch": "#!/usr/bin/env zsh",
+
+	"patterns": [{ "include": "#initial_context" }],
+
+	"repository": {
+
+
+
+
+		"initial_context": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#comment"											},
+				{ "include": "#pipeline"										},
+				{ "include": "#normal_statement_seperator"	},
+				{ "include": "#logical_expression_double"		},
+				{ "include": "#logical_expression_single"		},
+				{ "include": "#assignment_statement"				},
+				{ "include": "#case_statement"							},
+				{ "include": "#for_statement"								},
+				{ "include": "#loop"												},
+				{ "include": "#function_definition"					},
+				{ "include": "#line_continuation"						},
+				{ "include": "#arithmetic_double"						},
+				{ "include": "#misc_ranges"									},
+				{ "include": "#variable"										},
+				{ "include": "#interpolation"								},
+				{ "include": "#heredoc"											},
+				{ "include": "#herestring"									},
+				{ "include": "#redirection"									},
+				{ "include": "#pathname"										},
+				{ "include": "#floating_keyword"						},
+				{ "include": "#alias_statement"							},
+				{ "include": "#normal_statement"						},
+				{ "include": "#string"											},
+				{ "include": "#support"											}
+			]
+		},
+
+
+		"normal_context": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#comment"											},
+				{ "include": "#pipeline"										},
+				{ "include": "#normal_statement_seperator"	},
+				{ "include": "#misc_ranges"									},
+				{ "include": "#boolean"											},
+				{ "include": "#redirect_number"							},
+				{ "include": "#numeric_literal"							},
+				{ "include": "#string"											},
+				{ "include": "#variable"										},
+				{ "include": "#interpolation"								},
+				{ "include": "#heredoc"											},
+				{ "include": "#herestring"									},
+				{ "include": "#redirection"									},
+				{ "include": "#pathname"										},
+				{ "include": "#floating_keyword"						},
+				{ "include": "#support"											},
+				{ "include": "#parenthese"									}
+			]
+		},
+
+		"assignment_statement": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#array_value"										},
+				{ "include": "#modified_assignment_statement"	},
+				{ "include": "#normal_assignment_statement"		}
+			]
+		},
+
+
+		"comments": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#block_comment"	},
+				{ "include": "#line_comment"	}
+			]
+		},
+
+
+		"logical_expression_context": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#regex_comparison"						},
+				{ "include": "#arithmetic_no_dollar"				},
+				{ "include": "#logical-expression"					},
+				{ "include": "#logical_expression_single"		},
+				{ "include": "#logical_expression_double"		},
+				{ "include": "#comment"											},
+				{ "include": "#boolean"											},
+				{ "include": "#redirect_number"							},
+				{ "include": "#numeric_literal"							},
+				{ "include": "#pipeline"										},
+				{ "include": "#normal_statement_seperator"	},
+				{ "include": "#string"											},
+				{ "include": "#variable"										},
+				{ "include": "#interpolation"								},
+				{ "include": "#heredoc"											},
+				{ "include": "#herestring"									},
+				{ "include": "#pathname"										},
+				{ "include": "#floating_keyword"						},
+				{ "include": "#support"											}
+			]
+		},
+
+
+		"option_context": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#misc_ranges"				},
+				{ "include": "#string"						},
+				{ "include": "#variable"					},
+				{ "include": "#interpolation"			},
+				{ "include": "#heredoc"						},
+				{ "include": "#herestring"				},
+				{ "include": "#redirection"				},
+				{ "include": "#pathname"					},
+				{ "include": "#floating_keyword"	},
+				{ "include": "#support"						}
+			]
+		},
+
+
+		"typical_statements": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#assignment_statement"	},
+				{ "include": "#case_statement"				},
+				{ "include": "#for_statement"					},
+				{ "include": "#while_statement"				},
+				{ "include": "#function_definition"		},
+				{ "include": "#command_statement"			},
+				{ "include": "#line_continuation"			},
+				{ "include": "#arithmetic_double"			},
+				{ "include": "#normal_context"				}
+			]
+		},
+
+
+
+
+
+
+		"alias_statement": {
+			"name": "meta.expression.assignment.alias.zsh",
+			"comment": "",
+
+			"begin"	: "(?:(?:[ \\t]*+)(alias)(?:[ \\t]*+)((?:(?:((?<!\\w)-\\w+\\b)(?:[ \\t]*+))*))(?:(?:[ \\t]*+)(?:((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(?:(?:(\\[)((?:(?:(?:(?:\\$?)(?:(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))|@)|\\*)|(-?\\d+)))(\\]))?))(?:(?:(\\=)|(\\+\\=))|(\\-\\=))))",
+			"end"		: "(?:(?= |\\t|$)|(?:(?:(?:(;)|(&&))|(\\|\\|))|(&)))",
+
+			"beginCaptures": {
+				"1"	: { "name": "storage.type.alias.zsh"																																								},
+				"2"	: { "patterns": [{ "name": "string.unquoted.argument.zsh constant.other.option.zsh", "match": "(?<!\\w)-\\w+\\b" }]	},
+				"3"	: { "name": "string.unquoted.argument.zsh constant.other.option.zsh"																								},
+				"4"	: { "name": "variable.other.assignment.zsh"																																					},
+				"5"	: { "name": "punctuation.definition.array.access.zsh"																																},
+				"6"	: { "name": "variable.other.assignment.zsh"																																					},
+				"7"	: { "name": "constant.numeric.zsh constant.numeric.integer.zsh"																											},
+				"8"	: { "name": "punctuation.definition.array.access.zsh"																																},
+				"9"	: { "name": "keyword.operator.assignment.zsh"																																				},
+				"10": { "name": "keyword.operator.assignment.compound.zsh"																															},
+				"11": { "name": "keyword.operator.assignment.compound.zsh"																															}
+			},
+			"endCaptures": {
+				"1": { "name": "punctuation.terminator.statement.semicolon.zsh"	},
+				"2": { "name": "punctuation.separator.statement.and.zsh"				},
+				"3": { "name": "punctuation.separator.statement.or.zsh"					},
+				"4": { "name": "punctuation.separator.statement.background.zsh"	}
+			},
+
+			"patterns": [{ "include": "#normal_context" }]
+		},
+
+
+		"argument": {
+			"name": "meta.argument.zsh",
+			"comment": "",
+
+			"begin"	: "(?:[ \\t]++)(?!(?:&|\\||\\(|\\[|#|\\n|$|;))",
+			"end"		: "(?= |\\t|;|\\||&|$|\\n|\\)|\\`)",
+
+			"beginCaptures": {},
+			"endCaptures": {},
+
+			"patterns": [
+				{ "include": "#argument_context"	},
+				{ "include": "#line_continuation"	}
+			]
+		},
+
+
+		"argument_context": {
+			"comment": "",
+
+			"patterns": [
+				{ "include": "#normal_context" },
+
+				{ "match": "(?:[ \\t]*+)((?:[^ \t\n>&;<>\\(\\)\\$`\\\\\"'<\\|]+)(?!>))",
+
+					"captures": { "1": {
+						"name": "string.unquoted.argument.zsh",
+						"patterns": [
+							{ "name": "variable.language.special.wildcard.zsh", "match": "\\*" },
+							{ "include": "#variable"				},
+							{ "include": "#numeric_literal"	},
+							{
+								"match": "(?<!\\w)(\\b(?:true|false)\\b)(?!\\w)",
+								"captures": { "1": { "name": "constant.language.$1.zsh" } }
+							}
+						]}
+					}
+				}
+
+			]
+		},
+
+
+		"arithmetic_double": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.arithmetic.zsh",
+
+					"begin"	: "\\(\\(",
+					"end"		: "\\)(?:\\s*)\\)",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.section.arithmetic.double.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.section.arithmetic.double.zsh" } },
+
+					"patterns": [{ "include": "#math" }, { "include": "#string" }]
+				}
+			]
+		},
+
+
+		"arithmetic_no_dollar": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.arithmetic.zsh",
+
+					"begin"	: "\\(",
+					"end"		: "\\)",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.section.arithmetic.single.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.section.arithmetic.single.zsh" } },
+
+					"patterns": [{ "include": "#math" }, { "include": "#string" }]
+				}
+			]
+		},
+
+
+		"array_access_inline": {
+			"comment": "",
+			"match": "(?:(\\[)([^\\[\\]]+)(\\]))",
+
+			"captures": {
+				"1": { "name": "punctuation.section.array.zsh" },
+				"2": {
+					"patterns": [
+						{ "include": "#special_expansion" },
+						{ "include": "#string" },
+						{ "include": "#variable" }
+					]
+				},
+				"3": { "name": "punctuation.section.array.zsh" }
+			}
+		},
+
+
+		"array_value": {
+			"comment": "",
+			"begin"	: "(?:[ \\t]*+)(?:((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(?:(?:(\\[)((?:(?:(?:(?:\\$?)(?:(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))|@)|\\*)|(-?\\d+)))(\\]))?))(?:(?:(\\=)|(\\+\\=))|(\\-\\=))(?:[ \\t]*+)(\\()",
+			"end"		: "\\)",
+
+			"beginCaptures": {
+				"1": { "name": "variable.other.assignment.zsh" },
+				"2": { "name": "punctuation.definition.array.access.zsh" },
+				"3": { "name": "variable.other.assignment.zsh" },
+				"4": { "name": "constant.numeric.zsh constant.numeric.integer.zsh" },
+				"5": { "name": "punctuation.definition.array.access.zsh" },
+				"6": { "name": "keyword.operator.assignment.zsh" },
+				"7": { "name": "keyword.operator.assignment.compound.zsh" },
+				"8": { "name": "keyword.operator.assignment.compound.zsh" },
+				"9": { "name": "punctuation.definition.array.zsh" }
+			},
+			"endCaptures": { "0": { "name": "punctuation.definition.array.zsh" } },
+
+			"patterns": [
+				{ "include": "#comment" },
+
+				{
+					"match": "(?:((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(\\=))",
+					"captures": {
+						"1": { "name": "variable.other.assignment.array.zsh entity.other.attribute-name.zsh" },
+						"2": { "name": "keyword.operator.assignment.zsh punctuation.definition.assignment.zsh" }
+					}
+				},
+
+
+				{
+					"match": "(?:(\\[)(.+?)(\\])(\\=))",
+					"captures": {
+						"1": { "name": "punctuation.definition.bracket.named-array.zsh" },
+						"2": { "name": "string.unquoted.zsh entity.other.attribute-name.bracket.zsh" },
+						"3": { "name": "punctuation.definition.bracket.named-array.zsh" },
+						"4": { "name": "punctuation.definition.assignment.zsh" }
+					}
+				},
+
+
+				{ "include": "#normal_context" },
+				{ "include": "#simple_unquoted" }
+			]
+		},
+
+
+		"basic_command_name": {
+			"name": "meta.statement.command.name.basic.zsh",
+			"comment": "",
+
+			"match": "(?:(?:(?!(?:!|&|\\||\\(|\\)|\\{|\\[|<|>|#|\\n|$|;|[ \\t]))(?!nocorrect |nocorrect\t|nocorrect$|readonly |readonly\t|readonly$|function |function\t|function$|foreach |foreach\t|foreach$|coproc |coproc\t|coproc$|logout |logout\t|logout$|export |export\t|export$|select |select\t|select$|repeat |repeat\t|repeat$|pushd |pushd\t|pushd$|until |until\t|until$|while |while\t|while$|local |local\t|local$|case |case\t|case$|done |done\t|done$|elif |elif\t|elif$|else |else\t|else$|esac |esac\t|esac$|popd |popd\t|popd$|then |then\t|then$|time |time\t|time$|for |for\t|for$|end |end\t|end$|fi |fi\t|fi$|do |do\t|do$|in |in\t|in$|if |if\t|if$))(?:((?<=^|;|&|[ \\t])(?:readonly|declare|typeset|export|local)(?=[ \\t]|;|&|$))|((?!\"|'|\\\\\\n?$)(?:[^!'\"<> \\t\\n\\r]+?)))(?:(?= |\\t)|(?:(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\))))",
+
+			"captures": {
+				"1": { "name": "storage.modifier.$1.zsh" },
+				"2": {
+					"name": "entity.name.function.call.zsh entity.name.command.zsh",
+					"patterns": [
+						{ "name": "keyword.control.$0.zsh"			, "match": "(?<!\\w)(?:continue|return|break)(?!\\w)" },
+						{ "name": "support.function.builtin.zsh", "match": "(?<!\\w)(?:(?:unfunction|continue|autoload|unsetopt|bindkey|builtin|getopts|command|declare|unalias|history|unlimit|typeset|suspend|source|printf|unhash|disown|ulimit|return|which|alias|break|false|print|shift|times|umask|umask|unset|read|type|exec|eval|wait|echo|dirs|jobs|kill|hash|stat|exit|test|trap|true|let|set|pwd|cd|fg|bg|fc|:|\\.)(?!\\/))(?!\\w)(?!-)" },
+						{ "include": "#variable" }
+					]
+				}
+			}
+		},
+
+
+		"block_comment": {
+			"name": "comment.block.zsh",
+			"comment": "",
+
+			"begin"	: "(?:(?:\\s*+)(\\/\\*))",
+			"end"		: "\\*\\/",
+
+			"beginCaptures"	: { "1": { "name": "punctuation.definition.comment.begin.zsh" } },
+			"endCaptures"		: { "0": { "name": "punctuation.definition.comment.end.zsh" } }
+		},
+
+
+		"boolean": {
+			"name": "constant.language.$0.zsh",
+			"comment": "",
+			"match": "\\b(?:true|false)\\b"
+		},
+
+
+		"case_statement": {
+			"name": "meta.case.zsh",
+			"comment": "",
+
+			"begin"	: "(?:(\\bcase\\b)(?:[ \\t]*+)(.+?)(?:[ \\t]*+)(\\bin\\b))",
+			"end"		: "\\besac\\b",
+
+			"beginCaptures": {
+				"1": { "name": "keyword.control.case.zsh" },
+				"2": { "patterns": [{ "include": "#initial_context" }] },
+				"3": { "name": "keyword.control.in.zsh" }
+			},
+			"endCaptures": { "0": { "name": "keyword.control.esac.zsh" } },
+
+			"patterns": [
+				{ "include": "#comment" },
+
+				{
+					"match": "(?:[ \\t]*+)(\\* *\\))",
+					"captures": { "1": { "name": "keyword.operator.pattern.case.default.zsh" } }
+				},
+
+
+				{
+					"name": "meta.case.entry.pattern.zsh",
+					"patterns": [{ "include": "#case_statement_context" }],
+
+					"begin"	: "(?<!\\))(?!(?:[ \\t]*+)(?:esac\\b|$))",
+					"end"		: "(?:(?=\\besac\\b)|(\\)))",
+
+					"beginCaptures"	: {},
+					"endCaptures"		: { "1": { "name": "keyword.operator.pattern.case.zsh" } }
+				},
+
+
+				{
+					"name": "meta.case.entry.body.zsh",
+
+					"begin"	: "(?<=\\))",
+					"end"		: "(?:(;;)|(?=\\besac\\b))",
+
+					"beginCaptures"	: {},
+					"endCaptures"		: { "1": { "name": "punctuation.terminator.statement.case.zsh" } },
+
+					"patterns": [
+						{ "include": "#typical_statements" },
+						{ "include": "#initial_context" }
+					]
+				}
+
+			]
+		},
+
+
+		"case_statement_context": {
+			"comment": "",
+
+			"patterns": [
+				{ "match": "\\*"		, "name": "variable.language.special.quantifier.star.zsh keyword.operator.quantifier.star.zsh punctuation.definition.arbitrary-repetition.zsh punctuation.definition.regex.arbitrary-repetition.zsh" },
+				{ "match": "\\+"		, "name": "variable.language.special.quantifier.plus.zsh keyword.operator.quantifier.plus.zsh punctuation.definition.arbitrary-repetition.zsh punctuation.definition.regex.arbitrary-repetition.zsh" },
+				{ "match": "\\?"		, "name": "variable.language.special.quantifier.question.zsh keyword.operator.quantifier.question.zsh punctuation.definition.arbitrary-repetition.zsh punctuation.definition.regex.arbitrary-repetition.zsh" },
+				{ "match": "@"			, "name": "variable.language.special.at.zsh keyword.operator.at.zsh punctuation.definition.regex.at.zsh" },
+				{ "match": "\\|"		, "name": "keyword.operator.orvariable.language.special.or.zsh keyword.operator.alternation.ruby.zsh punctuation.definition.regex.alternation.zsh punctuation.separator.regex.alternation.zsh" },
+				{ "match": "\\\\."	, "name": "constant.character.escape.zsh" },
+
+				{ "match": "(?<=\\tin| in| |\\t|;;)\\(", "name": "keyword.operator.pattern.case.zsh" },
+
+				{
+					"name": "meta.parenthese.zsh",
+
+					"begin"	: "(?<=\\S)(\\()",
+					"end"		: "\\)",
+
+					"beginCaptures"	: { "1": { "name": "punctuation.definition.group.zsh punctuation.definition.regex.group.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.group.zsh punctuation.definition.regex.group.zsh" } },
+
+					"patterns": [{ "include": "#case_statement_context" }]
+				},
+
+
+				{
+					"name": "string.regexp.character-class.zsh",
+
+					"begin"	: "\\[",
+					"end"		: "\\]",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.character-class.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.character-class.zsh" } },
+
+					"patterns": [{ "match": "\\\\.", "name": "constant.character.escape.zsh" }]
+				},
+
+
+				{ "include": "#string" },
+
+				{ "name": "string.unquoted.pattern.zsh string.regexp.unquoted.zsh", "match": "[^) \\t\\n\\[\\?\\*\\|\\@]" }
+			]
+		},
+
+
+		"command_name_range": {
+			"name": "meta.statement.command.name.zsh",
+			"comment": "",
+
+			"begin"	: "\\G",
+			"end"		: "(?:(?= |\\t|;|\\||&|$|\\n|\\)|\\`)|(?=<))",
+
+			"beginCaptures"	: {},
+			"endCaptures"		: {},
+
+			"patterns": [
+				{
+					"name": "entity.name.function.call.zsh entity.name.command.zsh keyword.control.$0.zsh",
+					"match": "(?<!\\w)(?:continue|return|break)(?!\\w)"
+				},
+
+
+				{
+					"match": "(?<!\\w)(?:(?:unfunction|continue|autoload|unsetopt|bindkey|builtin|getopts|command|declare|unalias|history|unlimit|typeset|suspend|source|printf|unhash|disown|ulimit|return|which|alias|break|false|print|shift|times|umask|umask|unset|read|type|exec|eval|wait|echo|dirs|jobs|kill|hash|stat|exit|test|trap|true|let|set|pwd|cd|fg|bg|fc|:|\\.)(?!\\/))(?!\\w)(?!-)",
+					"name": "entity.name.function.call.zsh entity.name.command.zsh support.function.builtin.zsh"
+				},
+
+
+				{ "include": "#variable" },
+
+				{
+					"match": "(?:(?<!\\w)(?<=\\G|'|\"|\\}|\\))([^ \\n\\t\\r\"'=;&\\|`\\)\\{<>]+))",
+					"captures": { "1": { "name": "entity.name.function.call.zsh entity.name.command.zsh" } }
+				},
+
+
+				{
+					"begin"	: "(?:(?:\\G|(?<! |\\t|;|\\||&|\\n|\\{|#))(?:(\\$?)((?:(\")|(')))))",
+					"end"		: "(?<!\\G)(?<=(?:\\2))",
+
+					"beginCaptures": {
+						"1": { "name": "meta.statement.command.name.quoted.zsh punctuation.definition.string.zsh entity.name.function.call.zsh entity.name.command.zsh" },
+						"2": {},
+						"3": { "name": "meta.statement.command.name.quoted.zsh string.quoted.double.zsh punctuation.definition.string.begin.zsh entity.name.function.call.zsh entity.name.command.zsh" },
+						"4": { "name": "meta.statement.command.name.quoted.zsh string.quoted.single.zsh punctuation.definition.string.begin.zsh entity.name.function.call.zsh entity.name.command.zsh" }
+					},
+					"endCaptures": {},
+
+					"patterns": [
+						{ "include": "#continuation_of_single_quoted_command_name" },
+						{ "include": "#continuation_of_double_quoted_command_name" }
+					]
+				},
+
+
+				{ "include": "#line_continuation" },
+				{ "include": "#simple_unquoted" }
+			]
+		},
+
+
+		"command_statement": {
+			"name": "meta.statement.command.zsh",
+			"comment": "",
+
+			"begin"	: "(?:(?:[ \\t]*+)(?:(?!(?:!|&|\\||\\(|\\)|\\{|\\[|<|>|#|\\n|$|;|[ \\t]))(?!nocorrect |nocorrect\t|nocorrect$|readonly |readonly\t|readonly$|function |function\t|function$|foreach |foreach\t|foreach$|coproc |coproc\t|coproc$|logout |logout\t|logout$|export |export\t|export$|select |select\t|select$|repeat |repeat\t|repeat$|pushd |pushd\t|pushd$|until |until\t|until$|while |while\t|while$|local |local\t|local$|case |case\t|case$|done |done\t|done$|elif |elif\t|elif$|else |else\t|else$|esac |esac\t|esac$|popd |popd\t|popd$|then |then\t|then$|time |time\t|time$|for |for\t|for$|end |end\t|end$|fi |fi\t|fi$|do |do\t|do$|in |in\t|in$|if |if\t|if$)(?!\\\\\\n?$)))",
+			"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+			"beginCaptures"	: {},
+			"endCaptures"		: {},
+
+			"patterns": [
+				{ "include": "#command_name_range" },
+				{ "include": "#line_continuation" },
+				{ "include": "#option" },
+				{ "include": "#argument" },
+				{ "include": "#string" },
+				{ "include": "#heredoc" }
+			]
+		},
+
+
+		"comment": {
+			"comment": "",
+			"match": "(?:(?:^|(?:[ \\t]++))(?:((?:(#!)(?:.*)))|((?:(#)(?:.*)))))",
+			"captures": {
+				"1": { "name": "comment.line.number-sign.zsh meta.shebang.zsh" },
+				"2": { "name": "punctuation.definition.comment.shebang.zsh" },
+				"3": { "name": "comment.line.number-sign.zsh" },
+				"4": { "name": "punctuation.definition.comment.zsh" }
+			}
+		},
+
+
+		"compound-command": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.scope.logical-expression.zsh",
+
+					"begin"	: "\\[",
+					"end"		: "\\]",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+
+					"patterns": [
+						{ "include": "#logical-expression" },
+						{ "include": "#initial_context" }
+					]
+				},
+
+
+				{
+					"name": "meta.scope.group.zsh",
+
+					"begin"	: "(?<=\\s|^){(?=\\s|$)",
+					"end"		: "(?<=^|;)\\s*(})",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.group.zsh" } },
+					"endCaptures"		: { "1": { "name": "punctuation.definition.group.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				}
+			]
+		},
+
+
+		"continuation_of_double_quoted_command_name": {
+			"comment": "",
+			"contentName": "meta.statement.command.name.continuation string.quoted.double entity.name.function.call entity.name.command",
+
+			"begin"	: "(?:\\G(?<=\"))",
+			"end"		: "\"",
+
+			"beginCaptures": {},
+			"endCaptures": { "0": { "name": "string.quoted.double.zsh punctuation.definition.string.end.zsh entity.name.function.call.zsh entity.name.command.zsh" } },
+
+			"patterns": [
+				{ "name": "constant.character.escape.zsh", "match": "\\\\[\\$\\n`\"\\\\]" },
+				{ "include": "#variable" },
+				{ "include": "#interpolation" }
+			]
+		},
+
+
+		"continuation_of_single_quoted_command_name": {
+			"comment": "",
+			"contentName": "meta.statement.command.name.continuation string.quoted.single entity.name.function.call entity.name.command",
+
+			"begin"	: "(?:\\G(?<='))",
+			"end"		: "'",
+
+			"beginCaptures"	: {},
+			"endCaptures"		: { "0": { "name": "string.quoted.single.zsh punctuation.definition.string.end.zsh entity.name.function.call.zsh entity.name.command.zsh" } }
+		},
+
+
+		"double_quote_context": {
+			"comment": "",
+			"patterns": [
+				{ "name": "constant.character.escape.zsh", "match": "\\\\[\\$`\"\\\\\\n]" },
+				{ "include": "#variable" },
+				{ "include": "#interpolation" }
+			]
+		},
+
+
+		"double_quote_escape_char": {
+			"name": "constant.character.escape.zsh",
+			"comment": "",
+			"match": "\\\\[\\$`\"\\\\\\n]"
+		},
+
+
+		"floating_keyword": {
+			"comment": "",
+			"patterns": [{ "name": "keyword.control.$0.zsh", "match": "(?<=^|;|&| |\\t)(?:then|elif|else|done|end|do|if|fi)(?= |\\t|;|&|$)" }]
+		},
+
+
+		"for_statement": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.for.in.zsh",
+
+					"begin"	: "(?:(\\bfor\\b)(?:(?:[ \\t]*+)((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(?:[ \\t]*+)(\\bin\\b)))",
+					"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.control.for.zsh" },
+						"2": { "name": "variable.other.for.zsh" },
+						"3": { "name": "keyword.control.in.zsh" }
+					},
+					"endCaptures": {},
+
+					"patterns": [
+						{ "include": "#string" },
+						{ "include": "#simple_unquoted" },
+						{ "include": "#normal_context" }
+					]
+				},
+
+
+				{
+					"name": "meta.for.zsh",
+
+					"begin"	: "(\\bfor\\b)",
+					"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+					"beginCaptures"	: { "1": { "name": "keyword.control.for.zsh" } },
+					"endCaptures"		: {},
+
+					"patterns": [
+						{ "include": "#arithmetic_double" },
+						{ "include": "#normal_context" }
+					]
+				}
+
+			]
+		},
+
+
+		"function_definition": {
+			"name": "meta.function.zsh",
+			"comment": "",
+
+			"begin"	: "(?:[ \\t]*+)(?:(?:(\\bfunction\\b)(?:[ \\t]*+)([^ \\t\\n\\r\\(\\)=\"']+)(?:(?:(\\()(?:[ \\t]*+)(\\)))?))|(?:([^ \\t\\n\\r\\(\\)=\"']+)(?:[ \\t]*+)(\\()(?:[ \\t]*+)(\\))))",
+			"end"		: "(?<=\\}|\\))",
+
+			"beginCaptures": {
+				"1": { "name": "storage.type.function.zsh" },
+				"2": { "name": "entity.name.function.zsh" },
+				"3": { "name": "punctuation.definition.arguments.zsh" },
+				"4": { "name": "punctuation.definition.arguments.zsh" },
+				"5": { "name": "entity.name.function.zsh" },
+				"6": { "name": "punctuation.definition.arguments.zsh" },
+				"7": { "name": "punctuation.definition.arguments.zsh" }
+			},
+			"endCaptures": {},
+
+			"patterns": [
+				{ "match": "(?:\\G(?:\\t| |\\n))" },
+				{
+					"name": "meta.function.body.zsh",
+
+					"begin"	: "\\{",
+					"end"		: "\\}",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.group.zsh punctuation.section.function.definition.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.group.zsh punctuation.section.function.definition.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+
+
+				{
+					"name": "meta.function.body.zsh",
+
+					"begin"	: "\\(",
+					"end"		: "\\)",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.group.zsh punctuation.section.function.definition.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.group.zsh punctuation.section.function.definition.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+
+
+				{ "include": "#initial_context" }
+			],
+
+			"applyEndPatternLast": 1
+		},
+
+
+		"heredoc": {
+			"comment": "",
+			"patterns": [
+				{
+					"contentName": "string.quoted.heredoc.indent.$3",
+
+					"begin": "(?:((?<!<)(?:<<-))(?:[ \\t]*+)(\"|')(?:[ \\t]*+)([^\"']+?)(?=\\s|;|&|<|\"|')((?:\\2))(.*))",
+					"end": "(?:(?:^\\t*)(?:\\3)(?=\\s|;|&|$))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.heredoc.zsh" },
+						"2": { "name": "punctuation.definition.string.heredoc.quote.zsh" },
+						"3": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" },
+						"4": { "name": "punctuation.definition.string.heredoc.quote.zsh" },
+						"5": {
+							"patterns": [
+								{ "include": "#redirect_fix" },
+								{ "include": "#typical_statements" }
+							]
+						}
+					},
+					"endCaptures": { "0": { "name": "punctuation.definition.string.heredoc.$0.zsh" } },
+
+					"patterns": []
+				},
+
+
+				{
+					"contentName": "string.quoted.heredoc.no-indent.$3",
+
+					"begin"	: "(?:((?<!<)(?:<<)(?!<))(?:[ \\t]*+)(\"|')(?:[ \\t]*+)([^\"']+?)(?=\\s|;|&|<|\"|')((?:\\2))(.*))",
+					"end"		: "(?:^(?:\\3)(?=\\s|;|&|$))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.heredoc.zsh" },
+						"2": { "name": "punctuation.definition.string.heredoc.quote.zsh" },
+						"3": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" },
+						"4": { "name": "punctuation.definition.string.heredoc.quote.zsh" },
+						"5": {
+							"patterns": [
+								{ "include": "#redirect_fix" },
+								{ "include": "#typical_statements" }
+							]
+						}
+					},
+					"endCaptures": { "0": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" } },
+
+					"patterns": []
+				},
+
+
+				{
+					"contentName": "string.unquoted.heredoc.indent.$2",
+
+					"begin"	: "(?:((?<!<)(?:<<-))(?:[ \\t]*+)([^\"' \\t]+)(?=\\s|;|&|<|\"|')(.*))",
+					"end"		: "(?:(?:^\\t*)(?:\\2)(?=\\s|;|&|$))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.heredoc.zsh" },
+						"2": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" },
+						"3": {
+							"patterns": [
+								{ "include": "#redirect_fix" },
+								{ "include": "#typical_statements" }
+							]
+						}
+					},
+					"endCaptures": { "0": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" } },
+
+					"patterns": [
+						{ "include": "#double_quote_escape_char" },
+						{ "include": "#variable" },
+						{ "include": "#interpolation" }
+					]
+				},
+
+
+				{
+					"contentName": "string.unquoted.heredoc.no-indent.$2",
+
+					"begin"	: "(?:((?<!<)(?:<<)(?!<))(?:[ \\t]*+)([^\"' \\t]+)(?=\\s|;|&|<|\"|')(.*))",
+					"end"		: "(?:^(?:\\2)(?=\\s|;|&|$))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.heredoc.zsh" },
+						"2": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" },
+						"3": {
+							"patterns": [
+								{ "include": "#redirect_fix" },
+								{ "include": "#typical_statements" }
+							]
+						}
+					},
+					"endCaptures": { "0": { "name": "punctuation.definition.string.heredoc.delimiter.zsh" } },
+
+					"patterns": [
+						{ "include": "#double_quote_escape_char" },
+						{ "include": "#variable" },
+						{ "include": "#interpolation" }
+					]
+				}
+
+			]
+		},
+
+
+		"herestring": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.herestring.zsh",
+					"contentName": "string.quoted.single.zsh",
+
+					"begin"	: "(<<<)\\s*(('))",
+					"end"		: "(')",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.herestring.zsh" },
+						"2": { "name": "string.quoted.single.zsh" },
+						"3": { "name": "punctuation.definition.string.begin.zsh" }
+					},
+					"endCaptures": {
+						"0": { "name": "string.quoted.single.zsh" },
+						"1": { "name": "punctuation.definition.string.end.zsh" }
+					}
+				},
+
+
+				{
+					"name": "meta.herestring.zsh",
+					"contentName": "string.quoted.double.zsh",
+
+					"begin"	: "(<<<)\\s*((\"))",
+					"end"		: "(\")",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.herestring.zsh" },
+						"2": { "name": "string.quoted.double.zsh" },
+						"3": { "name": "punctuation.definition.string.begin.zsh" }
+					},
+					"endCaptures": {
+						"0": { "name": "string.quoted.double.zsh" },
+						"1": { "name": "punctuation.definition.string.end.zsh" }
+					},
+
+
+					"patterns": [{ "include": "#double_quote_context" }]
+				},
+
+
+				{
+					"name": "meta.herestring.zsh",
+					"match": "(<<<)\\s*(([^\\s)\\\\]|\\\\.)+)",
+
+					"captures": {
+						"1": { "name": "keyword.operator.herestring.zsh" },
+						"2": {
+							"name": "string.unquoted.herestring.zsh",
+							"patterns": [{ "include": "#initial_context" }]
+						}
+					}
+				}
+
+			]
+		},
+
+
+		"inline_comment": {
+			"comment": "",
+			"match": "(\\/\\*)((?:(?:[^\\*]|(?:(?:\\*++)[^\\/]))*+)((?:(?:\\*++)\\/)))",
+			"captures": {
+				"1": { "name": "comment.block.zsh punctuation.definition.comment.begin.zsh" },
+				"2": { "name": "comment.block.zsh" },
+				"3": {
+					"patterns": [
+						{ "match": "\\*\\/", "name": "comment.block.zsh punctuation.definition.comment.end.zsh" },
+						{ "match": "\\*", "name": "comment.block.zsh" }
+					]
+				}
+			}
+		},
+
+
+		"interpolation": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#arithmetic_dollar" },
+				{ "include": "#subshell_dollar" },
+
+				{
+					"name": "string.interpolated.backtick.zsh",
+
+					"begin"	: "`",
+					"end"		: "`",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.evaluation.backticks.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.evaluation.backticks.zsh" } },
+
+					"patterns": [
+						{ "match": "\\\\[`\\\\$]", "name": "constant.character.escape.zsh" },
+						{
+							"begin"	: "(?<=\\W)(?=#)(?!#{)",
+							"end"		: "(?!\\G)",
+
+							"beginCaptures": { "1": { "name": "punctuation.whitespace.comment.leading.zsh" } },
+
+							"patterns": [
+								{
+									"name": "comment.line.number-sign.zsh",
+
+									"begin"	: "#",
+									"end"		: "(?=`)",
+
+									"beginCaptures": { "0": { "name": "punctuation.definition.comment.zsh" } }
+								}
+							]
+						},
+						{ "include": "#initial_context" }
+					]
+
+				}
+
+			]
+		},
+
+
+		"keyword": {
+			"comment": "",
+			"patterns": [
+				{
+					"match": "(?<=^|;|&|\\s)(then|else|elif|fi|for|in|do|done|select|continue|esac|while|until|return)(?=\\s|;|&|$)",
+					"name": "keyword.control.zsh"
+				},
+				{
+					"match": "(?<=^|;|&|\\s)(?:export|declare|typeset|local|readonly)(?=\\s|;|&|$)",
+					"name": "storage.modifier.zsh"
+				}
+			]
+		},
+
+
+		"line_comment": {
+			"name": "comment.line.double-slash.zsh",
+			"comment": "",
+
+			"begin"	: "(?:\\s*+)(\\/\\/)",
+			"end"		: "(?<=\\n)(?<!\\\\\\n)",
+
+			"beginCaptures"	: { "1": { "name": "punctuation.definition.comment.zsh" } },
+			"endCaptures"		: {},
+
+			"patterns": [{ "include": "#line_continuation_character" }]
+		},
+
+
+		"line_continuation": {
+			"name": "constant.character.escape.line-continuation.zsh",
+			"comment": "",
+			"match": "\\\\(?=\\n)"
+		},
+
+
+		"logical-expression": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#arithmetic_no_dollar" },
+				{
+					"name": "keyword.operator.logical.zsh",
+					"comment": "do we want a special rule for ( expr )?",
+					"match": "=[=~]?|!=?|<|>|&&|\\|\\|"
+				},
+				{
+					"name": "keyword.operator.logical.zsh",
+					"match": "(?<!\\S)-(nt|ot|ef|eq|ne|l[te]|g[te]|[a-hknoprstuwxzOGLSN])\\b"
+				}
+			]
+		},
+
+
+		"logical_expression_double": {
+			"name": "meta.scope.logical-expression.zsh",
+			"comment": "",
+
+			"begin"	: "\\[\\[",
+			"end"		: "\\]\\]",
+			"beginCaptures"	: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+			"endCaptures"		: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+			"patterns": [{ "include": "#logical_expression_context" }]
+		},
+
+
+		"logical_expression_single": {
+			"name": "meta.scope.logical-expression.zsh",
+			"comment": "",
+
+			"begin"	: "\\[",
+			"end"		: "\\]",
+
+			"beginCaptures"	: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+			"endCaptures"		: { "0": { "name": "punctuation.definition.logical-expression.zsh" } },
+
+			"patterns": [{ "include": "#logical_expression_context" }]
+		},
+
+
+		"loop": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.scope.for-in-loop.zsh",
+
+					"begin"	: "(?<=^|;|&|\\s)(for)\\s+(.+?)\\s+(in)(?=\\s|;|&|$)",
+					"end"		: "(?<=^|;|&|\\s)done(?=\\s|;|&|$|\\))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.control.zsh" },
+						"2": { "name": "variable.other.loop.zsh", "patterns": [{ "include": "#string" }] },
+						"3": { "name": "keyword.control.zsh" }
+					},
+					"endCaptures": { "0": { "name": "keyword.control.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+
+
+				{
+					"name": "meta.scope.while-loop.zsh",
+
+					"begin"	: "(?<=^|;|&|\\s)(while|until)(?=\\s|;|&|$)",
+					"end"		: "(?<=^|;|&|\\s)done(?=\\s|;|&|$|\\))",
+
+					"beginCaptures"	: { "1": { "name": "keyword.control.zsh" } },
+					"endCaptures"		: { "0": { "name": "keyword.control.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+
+
+				{
+					"name": "meta.scope.select-block.zsh",
+
+					"begin"	: "(?<=^|;|&|\\s)(select)\\s+((?:[^\\s\\\\]|\\\\.)+)(?=\\s|;|&|$)",
+					"end"		: "(?<=^|;|&|\\s)(done)(?=\\s|;|&|$|\\))",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.control.zsh" },
+						"2": { "name": "variable.other.loop.zsh" }
+					},
+					"endCaptures": { "1": { "name": "keyword.control.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+
+
+				{
+					"name": "meta.scope.if-block.zsh",
+
+					"begin"	: "(?<=^|;|&|\\s)if(?=\\s|;|&|$)",
+					"end"		: "(?<=^|;|&|\\s)fi(?=\\s|;|&|$)",
+
+					"beginCaptures"	: { "0": { "name": "keyword.control.if.zsh" } },
+					"endCaptures"		: { "0": { "name": "keyword.control.fi.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				}
+			]
+		},
+
+
+		"math": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#variable" },
+				{ "name": "keyword.operator.arithmetic.zsh"			, "match": "\\+{1,2}|-{1,2}|!|~|\\*{1,2}|/|%|<[<=]?|>[>=]?|==|!=|^|\\|{1,2}|&{1,2}|\\?|\\:|,|=|[*/%+\\-&^|]=|<<=|>>=" },
+				{ "name": "constant.numeric.hex.zsh"						, "match": "0[xX][0-9A-Fa-f]+" },
+				{ "name": "punctuation.separator.semicolon.range"	, "match": ";" },
+				{ "name": "constant.numeric.octal.zsh"					, "match": "0\\d+" },
+				{ "name": "constant.numeric.other.zsh"					, "match": "\\d{1,2}#[0-9a-zA-Z@_]+" },
+				{ "name": "constant.numeric.integer.zsh"				, "match": "\\d+" },
+				{ "name": "variable.other.normal.zsh"						, "match": "(?<!\\w)(?:[a-zA-Z_0-9]+)(?!\\w)" }
+			]
+		},
+
+
+		"math_operators": {
+			"comment": "",
+			"patterns": [
+				{ "name": "keyword.operator.arithmetic.zsh"	, "match": "\\+{1,2}|-{1,2}|!|~|\\*{1,2}|/|%|<[<=]?|>[>=]?|==|!=|^|\\|{1,2}|&{1,2}|\\?|\\:|,|=|[*/%+\\-&^|]=|<<=|>>=" },
+				{ "name": "constant.numeric.hex.zsh"				, "match": "0[xX][0-9A-Fa-f]+" },
+				{ "name": "constant.numeric.octal.zsh"			, "match": "0\\d+" },
+				{ "name": "constant.numeric.other.zsh"			, "match": "\\d{1,2}#[0-9a-zA-Z@_]+" },
+				{ "name": "constant.numeric.integer.zsh"		, "match": "\\d+" }
+			]
+		},
+
+
+		"misc_ranges": {
+			"comment": "",
+			"patterns": [
+				{ "include": "#logical_expression_single" },
+				{ "include": "#logical_expression_double" },
+				{ "include": "#subshell_dollar" },
+				{
+					"name": "meta.scope.group.zsh",
+
+					"begin"	: "(?<![^ \\t])({)(?!\\w|\\$)",
+					"end"		: "}",
+
+					"beginCaptures"	: { "1": { "name": "punctuation.definition.group.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.group.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				}
+			]
+		},
+
+
+		"modified_assignment_statement": {
+			"name": "meta.statement.zsh meta.expression.assignment.modified.zsh",
+			"comment": "",
+
+			"begin"	: "(?<=^|;|&|[ \\t])(?:readonly|declare|typeset|export|local)(?=[ \\t]|;|&|$)",
+			"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+			"beginCaptures": { "0": { "name": "storage.modifier.$0.zsh" } },
+			"endCaptures": {},
+
+			"patterns": [
+				{
+					"match": "(?<!\\w)-\\w+\\b",
+					"name": "string.unquoted.argument.zsh constant.other.option.zsh"
+				},
+				{ "include": "#array_value" },
+				{
+					"match": "(?:((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(?:(?:(\\[)((?:(?:(?:(?:\\$?)(?:(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))|@)|\\*)|(-?\\d+)))(\\]))?)(?:(?:(?:(\\=)|(\\+\\=))|(\\-\\=))?)(?:(?:(?<==| |\\t|^|\\{|\\(|\\[)(?:(?:(?:(?:(?:(0[xX][0-9A-Fa-f]+)|(0\\d+))|(\\d{1,2}#[0-9a-zA-Z@_]+))|(-?\\d+(?:\\.\\d+)))|(-?\\d+(?:\\.\\d+)+))|(-?\\d+))(?= |\\t|$|\\}|\\)|;))?))",
+					"captures": {
+						"1"	: { "name": "variable.other.assignment.zsh" },
+						"2"	: { "name": "punctuation.definition.array.access.zsh" },
+						"3"	: { "name": "variable.other.assignment.zsh" },
+						"4"	: { "name": "constant.numeric.zsh constant.numeric.integer.zsh" },
+						"5"	: { "name": "punctuation.definition.array.access.zsh" },
+						"6"	: { "name": "keyword.operator.assignment.zsh" },
+						"7"	: { "name": "keyword.operator.assignment.compound.zsh" },
+						"8"	: { "name": "keyword.operator.assignment.compound.zsh" },
+						"9"	: { "name": "constant.numeric.zsh constant.numeric.hex.zsh" },
+						"10": { "name": "constant.numeric.zsh constant.numeric.octal.zsh" },
+						"11": { "name": "constant.numeric.zsh constant.numeric.other.zsh" },
+						"12": { "name": "constant.numeric.zsh constant.numeric.decimal.zsh" },
+						"13": { "name": "constant.numeric.zsh constant.numeric.version.zsh" },
+						"14": { "name": "constant.numeric.zsh constant.numeric.integer.zsh" }
+					}
+				},
+				{ "include": "#normal_context" }
+			]
+		},
+
+
+		"modifiers": {
+			"name": "storage.modifier.$0.zsh",
+			"comment": "",
+			"match": "(?<=^|;|&|[ \\t])(?:readonly|declare|typeset|export|local)(?=[ \\t]|;|&|$)"
+		},
+
+
+		"normal_assignment_statement": {
+			"name": "meta.expression.assignment.zsh",
+			"comment": "",
+
+			"begin"	: "(?:[ \\t]*+)(?:((?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))(?:(?:(\\[)((?:(?:(?:(?:\\$?)(?:(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w))|@)|\\*)|(-?\\d+)))(\\]))?))(?:(?:(\\=)|(\\+\\=))|(\\-\\=))",
+			"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+			"beginCaptures": {
+				"1": { "name": "variable.other.assignment.zsh" },
+				"2": { "name": "punctuation.definition.array.access.zsh" },
+				"3": { "name": "variable.other.assignment.zsh" },
+				"4": {
+					"name": "constant.numeric.zsh constant.numeric.integer.zsh"
+				},
+				"5": { "name": "punctuation.definition.array.access.zsh" },
+				"6": { "name": "keyword.operator.assignment.zsh" },
+				"7": { "name": "keyword.operator.assignment.compound.zsh" },
+				"8": { "name": "keyword.operator.assignment.compound.zsh" }
+			},
+			"endCaptures": {},
+
+			"patterns": [
+				{ "include": "#comment" },
+				{ "include": "#string" },
+				{ "include": "#normal_assignment_statement" },
+				{
+					"name": "meta.statement.command.env.zsh",
+
+					"begin"	: "(?<= |\\t)(?! |\\t|\\w+=)",
+					"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+					"beginCaptures"	: {},
+					"endCaptures"		: {},
+
+					"patterns": [
+						{ "include": "#command_name_range" },
+						{ "include": "#line_continuation" },
+						{ "include": "#option" },
+						{ "include": "#argument" },
+						{ "include": "#string" }
+					]
+				},
+				{ "include": "#simple_unquoted" },
+				{ "include": "#normal_context" }
+			]
+		},
+
+
+		"normal_statement": {
+			"name": "meta.statement.zsh",
+			"comment": "",
+
+			"begin"	: "(?:(?!^[ \\t]*+$)(?:(?<=^until | until |\\tuntil |^while | while |\\twhile |^elif | elif |\\telif |^else | else |\\telse |^then | then |\\tthen |^do | do |\\tdo |^if | if |\\tif )|(?<=(?:^|;|\\||&|!|\\(|\\{|\\`)))(?:[ \\t]*+)(?!nocorrect\\W|nocorrect\\$|function\\W|function\\$|foreach\\W|foreach\\$|repeat\\W|repeat\\$|logout\\W|logout\\$|coproc\\W|coproc\\$|select\\W|select\\$|while\\W|while\\$|pushd\\W|pushd\\$|until\\W|until\\$|case\\W|case\\$|done\\W|done\\$|elif\\W|elif\\$|else\\W|else\\$|esac\\W|esac\\$|popd\\W|popd\\$|then\\W|then\\$|time\\W|time\\$|for\\W|for\\$|end\\W|end\\$|fi\\W|fi\\$|do\\W|do\\$|in\\W|in\\$|if\\W|if\\$))",
+			"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+			"beginCaptures"	: {},
+			"endCaptures"		: {},
+
+			"patterns": [{ "include": "#typical_statements" }]
+		},
+
+
+		"normal_statement_seperator": {
+			"comment": "",
+			"match": "(?:(?:(?:(;)|(&&))|(\\|\\|))|(&))",
+			"captures": {
+				"1": { "name": "punctuation.terminator.statement.semicolon.zsh" },
+				"2": { "name": "punctuation.separator.statement.and.zsh" },
+				"3": { "name": "punctuation.separator.statement.or.zsh" },
+				"4": { "name": "punctuation.separator.statement.background.zsh" }
+			}
+		},
+
+
+		"numeric_literal": {
+			"comment": "",
+			"match": "(?<==| |\\t|^|\\{|\\(|\\[)(?:(?:(?:(?:(?:(0[xX][0-9A-Fa-f]+)|(0\\d+))|(\\d{1,2}#[0-9a-zA-Z@_]+))|(-?\\d+(?:\\.\\d+)))|(-?\\d+(?:\\.\\d+)+))|(-?\\d+))(?= |\\t|$|\\}|\\)|;)",
+			"captures": {
+				"1": { "name": "constant.numeric.zsh constant.numeric.hex.zsh" },
+				"2": { "name": "constant.numeric.zsh constant.numeric.octal.zsh" },
+				"3": { "name": "constant.numeric.zsh constant.numeric.other.zsh" },
+				"4": { "name": "constant.numeric.zsh constant.numeric.decimal.zsh" },
+				"5": { "name": "constant.numeric.zsh constant.numeric.version.zsh" },
+				"6": { "name": "constant.numeric.zsh constant.numeric.integer.zsh" }
+			}
+		},
+
+
+		"option": {
+			"comment": "",
+			"contentName": "string.unquoted.argument constant.other.option",
+
+			"begin"	: "(?:(?:[ \\t]++)(-)((?!(?:!|&|\\||\\(|\\)|\\{|\\[|<|>|#|\\n|$|;|[ \\t]))))",
+			"end"		: "(?:(?=[ \\t])|(?:(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)))",
+
+			"beginCaptures": {
+				"1": { "name": "string.unquoted.argument.zsh constant.other.option.dash.zsh" },
+				"2": { "name": "string.unquoted.argument.zsh constant.other.option.zsh" }
+			},
+			"endCaptures": {},
+
+			"patterns": [{ "include": "#option_context" }]
+		},
+
+
+		"parenthese": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.parenthese.group.zsh",
+
+					"begin"	: "\\(",
+					"end"		: "\\)",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.section.parenthese.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.section.parenthese.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				}
+			]
+		},
+
+
+		"pathname": {
+			"comment": "",
+			"patterns": [
+				{ "name": "keyword.operator.tilde.zsh", "match": "(?<=\\s|:|=|^)~" },
+				{ "name": "keyword.operator.glob.zsh"	, "match": "\\*|\\?" },
+				{
+					"name": "meta.structure.extglob.zsh",
+
+					"begin"	: "([?*+@!])(\\()",
+					"end"		: "\\)",
+
+					"beginCaptures": {
+						"1": { "name": "keyword.operator.extglob.zsh" },
+						"2": { "name": "punctuation.definition.extglob.zsh" }
+					},
+					"endCaptures": { "0": { "name": "punctuation.definition.extglob.zsh" } },
+
+					"patterns": [{ "include": "#initial_context" }]
+				}
+			]
+		},
+
+
+		"pipeline": {
+			"comment": "",
+			"patterns": [
+				{ "name": "keyword.other.zsh"					, "match": "(?<=^|;|&|\\s)(time)(?=\\s|;|&|$)" },
+				{ "name": "keyword.operator.pipe.zsh"	, "match": "[|!]" }
+			]
+		},
+
+
+		"redirect_fix": {
+			"comment": "",
+			"match": "(?:(>>?)(?:[ \\t]*+)([^ \t\n>&;<>\\(\\)\\$`\\\\\"'<\\|]+))",
+			"captures": {
+				"1": { "name": "keyword.operator.redirect.zsh" },
+				"2": { "name": "string.unquoted.argument.zsh" }
+			}
+		},
+
+
+		"redirect_number": {
+			"comment": "",
+			"match": "(?<=[ \\t])(?:(?:(1)|(2)|(\\d+))(?=>))",
+			"captures": {
+				"1": { "name": "keyword.operator.redirect.stdout.zsh" },
+				"2": { "name": "keyword.operator.redirect.stderr.zsh" },
+				"3": { "name": "keyword.operator.redirect.$3.zsh" }
+			}
+		},
+
+
+		"redirection": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "string.interpolated.process-substitution.zsh",
+
+					"begin": "[><]\\(",
+					"end": "\\)",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.string.begin.zsh"	} },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.string.end.zsh"		} },
+
+					"patterns": [{ "include": "#initial_context" }]
+				},
+				{
+					"name": "keyword.operator.redirect.zsh",
+					"match": "(?<![<>])(&>|\\d*>&\\d*|\\d*(>>|>|<)|\\d*<&|\\d*<>)(?![<>])"
+				}
+			]
+		},
+
+
+		"regex_comparison": {
+			"name": "keyword.operator.logical.regex.zsh",
+			"comment": "",
+			"match": "\\=~"
+		},
+
+
+		"regexp": { "patterns": [{ "match": "(?:.+)" }] },
+
+		"simple_options": {
+			"comment": "",
+			"match": "(?:(?:[ \\t]++)\\-(?:\\w+))*",
+
+			"captures": {
+				"0": {
+					"patterns": [{
+						"match": "(?:[ \\t]++)(\\-)(\\w+)",
+						"captures": {
+							"1": { "name": "string.unquoted.argument.zsh constant.other.option.dash.zsh" },
+							"2": { "name": "string.unquoted.argument.zsh constant.other.option.zsh" }
+						}
+					}]
+				}
+			}
+		},
+
+
+		"simple_unquoted": {
+			"name": "string.unquoted.zsh",
+			"comment": "",
+			"match": "[^ \\t\\n>&;<>\\(\\)\\$`\\\\\"'<\\|]"
+		},
+
+
+		"special_expansion": {
+			"name": "keyword.operator.expansion.zsh",
+			"comment": "",
+			"match": "!|:[-=?]?|\\*|@|##|#|%%|%|\\/"
+		},
+
+
+		"start_of_command": {
+			"comment": "",
+			"match": "(?:(?:[ \\t]*+)(?:(?!(?:!|&|\\||\\(|\\)|\\{|\\[|<|>|#|\\n|$|;|[ \\t]))(?!nocorrect |nocorrect\t|nocorrect$|readonly |readonly\t|readonly$|function |function\t|function$|foreach |foreach\t|foreach$|coproc |coproc\t|coproc$|logout |logout\t|logout$|export |export\t|export$|select |select\t|select$|repeat |repeat\t|repeat$|pushd |pushd\t|pushd$|until |until\t|until$|while |while\t|while$|local |local\t|local$|case |case\t|case$|done |done\t|done$|elif |elif\t|elif$|else |else\t|else$|esac |esac\t|esac$|popd |popd\t|popd$|then |then\t|then$|time |time\t|time$|for |for\t|for$|end |end\t|end$|fi |fi\t|fi$|do |do\t|do$|in |in\t|in$|if |if\t|if$)(?!\\\\\\n?$)))"
+		},
+
+
+		"string": {
+			"comment": "",
+			"patterns": [
+				{ "match": "\\\\.", "name": "constant.character.escape.zsh" },
+
+				{
+					"name": "string.quoted.single.zsh",
+
+					"begin"	: "'",
+					"end"		: "'",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.string.begin.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.string.end.zsh" } }
+				},
+
+
+				{
+					"name": "string.quoted.double.zsh",
+
+					"begin"	: "\\$?\"",
+					"end"		: "\"",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.string.begin.zsh"	} },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.string.end.zsh"		} },
+
+					"patterns": [
+						{ "name": "constant.character.escape.zsh", "match": "\\\\[\\$\\n`\"\\\\]" },
+						{ "include": "#variable" },
+						{ "include": "#interpolation" }
+					]
+				},
+
+
+				{
+					"name": "string.quoted.single.dollar.zsh",
+
+					"begin"	: "\\$'",
+					"end"		: "'",
+
+					"beginCaptures"	: { "0": { "name": "punctuation.definition.string.begin.zsh" } },
+					"endCaptures"		: { "0": { "name": "punctuation.definition.string.end.zsh" } },
+
+					"patterns": [
+						{ "name": "constant.character.escape.ansi-c.zsh"			, "match": "\\\\(?:a|b|e|f|n|r|t|v|\\\\|')"	},
+						{ "name": "constant.character.escape.octal.zsh"				, "match": "\\\\[0-9]{3}\""									},
+						{ "name": "constant.character.escape.hex.zsh"					, "match": "\\\\x[0-9a-fA-F]{2}\""					},
+						{ "name": "constant.character.escape.control-char.zsh", "match": "\\\\c.\""												}
+					]
+				}
+			]
+		},
+
+
+		"subshell_dollar": {
+			"comment": "",
+			"patterns": [{
+				"name": "meta.scope.subshell",
+
+				"begin"	: "(?:\\$\\()",
+				"end"		: "\\)",
+
+				"beginCaptures"	: { "0": { "name": "punctuation.definition.subshell.single.zsh" } },
+				"endCaptures"		: { "0": { "name": "punctuation.definition.subshell.single.zsh" } },
+
+				"patterns": [
+					{ "include": "#parenthese" },
+					{ "include": "#initial_context" }
+				]
+			}]
+		},
+
+
+		"support": {
+			"comment": "",
+			"patterns": [{
+				"name": "support.function.builtin.zsh",
+				"match": "(?<=^|;|&|\\s)(?::|\\.)(?=\\s|;|&|$)"
+			}]
+		},
+
+
+		"variable": {
+			"comment": "",
+			"patterns": [
+				{
+					"match": "(?:(\\$)(\\@(?!\\w)))",
+					"captures": {
+						"1": { "name": "punctuation.definition.variable.zsh variable.parameter.positional.all.zsh" },
+						"2": { "name": "variable.parameter.positional.all.zsh" }
+					}
+				},
+
+
+				{
+					"match": "(?:(\\$)([0-9](?!\\w)))",
+					"captures": {
+						"1": { "name": "punctuation.definition.variable.zsh variable.parameter.positional.zsh" },
+						"2": { "name": "variable.parameter.positional.zsh" }
+					}
+				},
+
+
+				{
+					"match": "(?:(\\$)([-*#?$!0_](?!\\w)))",
+					"captures": {
+						"1": { "name": "punctuation.definition.variable.zsh variable.language.special.zsh" },
+						"2": { "name": "variable.language.special.zsh" }
+					}
+				},
+
+
+				{
+					"contentName": "meta.parameter-expansion",
+
+					"begin"	: "(?:(\\$)(\\{)(?:[ \\t]*+)(?=\\d))",
+					"end"		: "\\}",
+
+					"beginCaptures": {
+						"1": { "name": "punctuation.definition.variable.zsh variable.parameter.positional.zsh" },
+						"2": { "name": "punctuation.section.bracket.curly.variable.begin.zsh punctuation.definition.variable.zsh variable.parameter.positional.zsh" }
+					},
+					"endCaptures": { "0": { "name": "punctuation.section.bracket.curly.variable.end.zsh punctuation.definition.variable.zsh variable.parameter.positional.zsh" } },
+
+					"patterns": [
+						{ "include": "#special_expansion" },
+						{ "include": "#array_access_inline" },
+						{ "name": "variable.parameter.positional.zsh"	, "match": "[0-9]+"															},
+						{ "name": "variable.other.normal.zsh"					, "match": "(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w)"	},
+						{ "include": "#variable" },
+						{ "include": "#string" }
+					]
+				},
+
+
+				{
+					"contentName": "meta.parameter-expansion",
+
+					"begin"	: "(?:(\\$)(\\{))",
+					"end"		: "\\}",
+
+					"beginCaptures": {
+						"1": { "name": "punctuation.definition.variable.zsh" },
+						"2": { "name": "punctuation.section.bracket.curly.variable.begin.zsh punctuation.definition.variable.zsh" }
+					},
+					"endCaptures": { "0": { "name": "punctuation.section.bracket.curly.variable.end.zsh punctuation.definition.variable.zsh" } },
+
+					"patterns": [
+						{ "include": "#special_expansion" },
+						{ "include": "#array_access_inline" },
+						{ "name": "variable.other.normal.zsh", "match": "(?<!\\w)(?:[a-zA-Z_0-9-]+)(?!\\w)" },
+						{ "include": "#variable" },
+						{ "include": "#string" }
+					]
+				},
+
+
+				{
+					"match": "(?:(\\$)((?:\\w+)(?!\\w)))",
+					"captures": {
+						"1": { "name": "punctuation.definition.variable.zsh variable.other.normal.zsh" },
+						"2": { "name": "variable.other.normal.zsh" }
+					}
+				}
+
+			]
+		},
+
+
+		"while_statement": {
+			"comment": "",
+			"patterns": [
+				{
+					"name": "meta.while.zsh",
+
+					"begin"	: "(\\bwhile\\b)",
+					"end"		: "(?=;|\\||&|\\n|\\)|\\`|\\{|\\}|[ \\t]*#|\\])(?<!\\\\)",
+
+					"beginCaptures"	: { "1": { "name": "keyword.control.while.zsh" } },
+					"endCaptures"		: {},
+
+					"patterns": [
+						{ "include": "#line_continuation" },
+						{ "include": "#math_operators" },
+						{ "include": "#option" },
+						{ "include": "#simple_unquoted" },
+						{ "include": "#normal_context" },
+						{ "include": "#string" }
+					]
+				}
+			]
+		},
+
+
+
+
+		"custom_command_names": { "patterns": [] },
+		"custom_commands"	:		 	{ "patterns": [] }
+	}
+
+}
