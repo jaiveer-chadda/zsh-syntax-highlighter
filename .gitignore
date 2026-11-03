@@ -12,6 +12,9 @@ vsc-extension-quickstart.md
 .DS_Store
 Icon?
 
+# Language Files
+node_modules/
+
 # IDEs
 .idea/
 .vscode/

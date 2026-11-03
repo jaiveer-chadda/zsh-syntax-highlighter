@@ -5,20 +5,40 @@
 	"scopeName": "source.zsh",
 
 	"patterns": [
-		{ "include": "#shebang"	}
+		{ "include": "#shebang"	},
+		{ "include": "#builtin"	},
+		{ "include": "#comment"	},
+		{ "include": "#function"}
 	],
 
 	"repository": {
 
 		"shebang": {
-			"name": "meta.shebang.zsh", "comment": "#!/usr/bin/env zsh  |  #!/bin/zsh",
-
+			"name": "meta.shebang.zsh",
+			"comment": "#!/usr/bin/env zsh  |  #!/bin/zsh",
 			"match": "^(#!)\\s*(\\S*)\\s*(.*)$",
 			"captures": {
 				"1": { "name": "punctuation.definition.comment.shebang.zsh" },
 				"2": { "name": "meta.shebang.interpreter.zsh" },
 				"3": { "name": "meta.shebang.args.zsh" }
 			}
+		},
+
+		"comment": {
+			"name": "comment.line.zsh",
+			"match": "(?<=^|\\s)(#).*$",
+			"captures": { "1": { "name": "punctuation.definition.comment.zsh" } }
+		},
+
+		"function": {
+			"name": "meta.function.declaration.zsh",
+			"match": ""
+		},
+
+		"[D] builtin": {
+			"name": "support.function.builtin.zsh",
+			"comment": "     ^ ; &&   | ||  ",
+			"match": "(?<=(?:^|;|&&|\\|\\|?)\\s*)echo"
 		}
 
 	}

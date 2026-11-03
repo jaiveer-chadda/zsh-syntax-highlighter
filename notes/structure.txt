@@ -1,0 +1,44 @@
+repository
+│
+├── comments
+│
+├── keywords
+│   ├── control-flow
+│   ├── declarations
+│   └── reserved-words
+│
+├── commands
+│   ├── command
+│   ├── builtin
+│   ├── external
+│   └── function-call
+│
+├── variables
+│   ├── variable
+│   ├── parameter
+│   ├── special-parameter
+│   └── array-element
+│
+├── strings
+│   ├── single-quoted
+│   ├── double-quoted
+│   ├── ansi-c-quoted
+│   └── escape-sequence
+│
+├── expansions
+│   ├── parameter-expansion
+│   ├── command-substitution
+│   ├── arithmetic-expansion
+│   └── process-substitution
+│
+├── operators
+│   ├── arithmetic
+│   ├── logical
+│   ├── redirection
+│   └── pipeline
+│
+└── structures
+    ├── function-definition
+    ├── conditional
+    ├── loop
+    └── here-document

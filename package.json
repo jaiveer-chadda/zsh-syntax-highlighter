@@ -4,8 +4,9 @@
 	"description"	: "",
 	"version"			: "0.0.1",
 
-	"engines"			: { "vscode": "^1.137.0" },
-	"categories"	: [ "Programming Languages" ],
+	"categories"			: [ "Programming Languages" ],
+	"engines"					: { "vscode": "^1.137.0" },
+	"devDependencies"	: { "js-yaml": "^5.5.0" },
 
 	"contributes"	: {
 

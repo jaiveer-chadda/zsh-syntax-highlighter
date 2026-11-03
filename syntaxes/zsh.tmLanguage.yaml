@@ -1,0 +1,80 @@
+## @file syntaxes/zsh.tmLanguage.yaml
+
+"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+# All Fields
+# ‾‾‾‾‾‾‾‾‾‾
+# name                : string    // the name which gets assigned to the portion matched. This is used for styling and scope-specific settings and actions, which means it should generally be derived from one of the standard names.
+# contentName         : string    // this key is similar to the name key but only assigns the name to the text between what is matched by the begin/end patterns.
+# disabled            : int-bool  // set this property to 1 to disable the current pattern
+#
+# comment             : string    // just a comment - nothing special about it
+#
+# match               : string    // a regular expression which is used to identify the portion of text to which the name should be assigned. Example: '\b(true|false)\b'.
+# captures            : object    // allows you to assign attributes to the captures of the match pattern. Using the captures key for a begin/end rule is short-hand for giving both beginCaptures and endCaptures with same values.
+#
+# begin               : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and end is the pattern which ends the block. Captures from the begin pattern can be referenced in the end pattern by using normal regular expression back-references. This is often used with here-docs. A begin/end rule can have nested patterns using the patterns key.
+# end                 : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and end is the pattern which ends the block. Captures from the begin pattern can be referenced in the end pattern by using normal regular expression back-references. This is often used with here-docs. A begin/end rule can have nested patterns using the patterns key.
+# while               : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and while continues it.
+#
+# beginCaptures       : object    // allows you to assign attributes to the captures of the begin pattern. Using the captures key for a begin/end   rule is short-hand for giving both beginCaptures and endCaptures   with same values.
+# endCaptures         : object    // allows you to assign attributes to the captures of the end   pattern. Using the captures key for a begin/end   rule is short-hand for giving both beginCaptures and endCaptures   with same values.
+# whileCaptures       : object    // allows you to assign attributes to the captures of the while pattern. Using the captures key for a begin/while rule is short-hand for giving both beginCaptures and whileCaptures with same values.
+#
+# patterns            : array     // applies to the region between the begin and end matches
+#
+# applyEndPatternLast : int-bool
+# include             : string    // this allows you to reference a different language, recursively reference the grammar itself or a rule declared in this file’s repository.
+
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+name: zsh
+scopeName: source.zsh
+
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+patterns:
+  - include: "#shebang"
+  - include: "#comment"
+  - include: "#builtin"
+  - include: "#function"
+
+repository: {
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  shebang: { name: meta.shebang.zsh,
+    match: '^(#!)\s*(\S*)\s*(.*)$',
+
+    captures: {
+      '1': { name: punctuation.definition.comment.shebang.zsh },
+      '2': { name: meta.shebang.interpreter.zsh               },
+      '3': { name: meta.shebang.args.zsh                      },
+    }
+  },
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  comment: { name: comment.line.zsh,
+    match: '(?<=^|\s)(#).*$',
+    captures: { '1': { name: punctuation.definition.comment.zsh } },
+  },
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function: {
+    name: "meta.function.declaration.zsh", # todo: implement
+  },
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  builtin: {
+    name: support.function.builtin.zsh,
+    match: '(?<=(?:^|;|&&|\|\|?)\s*)echo', # todo: finish
+  },
+
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  }
