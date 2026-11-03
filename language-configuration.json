@@ -1,3 +1,5 @@
+/// @file language-configuration.json
+
 {
 	"comments": { "lineComment": { "comment": "#", "noIndent": false } },
 

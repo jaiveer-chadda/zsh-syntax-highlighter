@@ -2,26 +2,23 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "zsh",
 
-	"fileTypes": [ ".zsh" ],
-	"firstLineMatch": "#!/usr/bin/env zsh",
-
 	"scopeName": "source.zsh",
 
 	"patterns": [
-		{ "include": "#keywords"	},
-		{ "include": "#strings"		}
+		{ "include": "#shebang"	}
 	],
 
 	"repository": {
 
-		"keywords": {
-			"patterns": [{ "name": "keyword.control.zsh", "match": "\\b(if|while|for|return)\\b" }]
-		},
+		"shebang": {
+			"name": "meta.shebang.zsh", "comment": "#!/usr/bin/env zsh  |  #!/bin/zsh",
 
-		"strings": {
-			"name": "string.quoted.double.zsh",
-			"begin": "\"", "end": "\"",
-			"patterns": [{ "name": "constant.character.escape.zsh", "match": "\\\\." }]
+			"match": "^(#!)\\s*(\\S*)\\s*(.*)$",
+			"captures": {
+				"1": { "name": "punctuation.definition.comment.shebang.zsh" },
+				"2": { "name": "meta.shebang.interpreter.zsh" },
+				"3": { "name": "meta.shebang.args.zsh" }
+			}
 		}
 
 	}
