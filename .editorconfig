@@ -8,5 +8,5 @@ root=true
     indent_style = tab
     indent_size = 2
 
-[*.z*]
+[*{.z*,.md}]
     indent_size = 2

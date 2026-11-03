@@ -1,0 +1,76 @@
+
+# no-op
+:
+
+# storage.type.alias
+alias
+
+# storage.type.function
+function
+
+# storage.modifier
+local
+integer
+typeset
+float
+declare
+export
+readonly
+
+# storage type unsetting?
+unalias
+unfunction
+unhash
+unset
+
+# precommand modifiers
+-
+builtin
+command
+exec
+nocorrect
+noglob
+
+# pre-pipeline keywords
+time
+coproc  # also in job control
+
+# eval
+eval
+
+# keyword.control
+break
+continue
+return
+exit
+bye
+logout
+
+# job control
+fg
+bg
+kill
+wait
+trap
+coproc  # also in precmd modifiers
+disown
+suspend
+
+# shell behaviour control
+.
+source
+setopt
+unsetopt
+emulate
+autoload
+
+# enable/disable commands
+enable
+disable
+
+# booleans
+false
+true
+
+# variable control
+shift
