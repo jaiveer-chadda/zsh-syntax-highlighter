@@ -5,7 +5,8 @@ out/
 build/
 tests/
 archive/
-resources/originals
+resources/refs.md
+resources/originals/
 vsc-extension-quickstart.md
 
 # System Files

@@ -41,40 +41,47 @@ patterns:
   - include: "#builtin"
   - include: "#function"
 
-repository: {
+repository:
+
+  # yaml-embedded-languages: regex
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  shebang: { name: meta.shebang.zsh,
-    match: '^(#!)\s*(\S*)\s*(.*)$',
+  shebang: 
+    name: meta.shebang.zsh
+    match: |-
+      (?x)
+      ^([#]!)\s*(\S*)\s*(.*)$
 
-    captures: {
-      '1': { name: punctuation.definition.comment.shebang.zsh },
-      '2': { name: meta.shebang.interpreter.zsh               },
-      '3': { name: meta.shebang.args.zsh                      },
-    }
-  },
-
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  comment: { name: comment.line.zsh,
-    match: '(?<=^|\s)(#).*$',
-    captures: { '1': { name: punctuation.definition.comment.zsh } },
-  },
+    captures:
+      '1': { name: punctuation.definition.comment.shebang.zsh }
+      '2': { name: meta.shebang.interpreter.zsh               }
+      '3': { name: meta.shebang.args.zsh                      }
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function: {
-    name: "meta.function.declaration.zsh", # todo: implement
-  },
+  comment:
+    name: comment.line.zsh
+    match: |-
+      (?x)
+      (?<=^|\s)([#]).*$
+
+    captures: { '1': { name: punctuation.definition.comment.zsh } }
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  builtin: {
-    name: support.function.builtin.zsh,
-    match: '(?<=(?:^|;|&&|\|\|?)\s*)echo', # todo: finish
-  },
+  function:
+    name: "meta.function.declaration.zsh" # todo: implement
+    match: |-
+      (?x)
+      function
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  builtin:
+    name: support.function.builtin.zsh
+    match: |-
+      (?x)
+      (?<=(?:^|;|&&|[|]{1,2})\s*)echo
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  }
