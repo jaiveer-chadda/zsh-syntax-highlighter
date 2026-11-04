@@ -40,6 +40,7 @@ patterns:
   - include: "#comment"
   - include: "#builtin"
   - include: "#function"
+  - include: "#semicolon"
 
 repository:
 
@@ -70,11 +71,40 @@ repository:
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
+  semicolon:
+    name: punctuation.terminator.semicolon.zsh
+    match: ;
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  # function [ -T ] word ... [ () ] [ term ]  { list }
+  # function        word ... [ () ] [ term ] sublist
+  #                 word ...   ()   [ term ]  { list }
+  #                 word ...   ()   [ term ] command
+
   function:
-    name: "meta.function.declaration.zsh" # todo: implement
+    patterns:
+      - include: "#function_explicit"
+      - include: "#function_implicit"
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_explicit:
+    name: meta.function.declaration.zsh
     match: |-
       (?x)
-      function
+      (function)
+      ((?:\s+ -T+        )* )   # you can have as many `-T`s as you'd like apparently, and they can be `-TTT`s too!
+       (?:\s+ (--)          )?  # optional `--`, however, it always has to come after the `-T`(s)
+      ((?:\s+ [^(){;\s]+ )* )   # todo: add quoting rules - e.g. ur allowed spaces in func names, but only if quoted
+       (?:\s* \(\)          )?
+      [;]?[{]?
+
+    captures:
+      '1': { name: storage.type.function.zsh     }
+      '2': { name: constant.other.option.zsh     }
+      '3': { name: constant.other.option.end.zsh }
+      '4': { name: entity.name.function.zsh      }
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
