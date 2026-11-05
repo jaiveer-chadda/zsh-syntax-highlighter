@@ -22,7 +22,9 @@
 		"grammars": [{
 			"language"	: "zsh",
 			"scopeName"	: "source.zsh",
-			"path"			: "./syntaxes/zsh.tmLanguage.json"
+			"path"			: "./syntaxes/zsh.tmLanguage.json",
+			"balancedBracketScopes"		: [ "*" ],
+			"unbalancedBracketScopes"	: [ "meta.scope.case-pattern.zsh" ]
 		}]
 
 	}

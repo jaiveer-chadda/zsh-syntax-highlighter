@@ -99,35 +99,58 @@ repository:
   # —— function_explicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_explicit:
-    name: meta.function.declaration.zsh
-    match: |-
+    name: meta.function.declaration.explicit.zsh
+
+    # I'm using `begin` and `end` here, rather than `match`,
+    #  so that I can capture each name/option as its own element, rather than having all names be captured together
+
+    begin: |-
+      \b(function)\b
+
+    end: |-
       (?x)
-      \b                  # todo: allow any statement terminator to precede the declaration, e.g., `&&`, `;`, `|`, etc.
-      (function)
-      ((?:\s+ -T+        )* )   # you can have as many `-T`s as you'd like apparently, and they can be `-TTT`s too!
-       (?:\s+ (--)          )?  # optional `--`, however, it always has to come after the `-T`(s)
-      ((?:\s+ [^(){;\s]+ )* )   # todo: add quoting rules, cos e.g. ur allowed spaces in func names, but only if quoted
-      (   \s* [(][)]        )?  # in explicit declarations, the `()` is optional
+      (?=[(][)]|\s*(?:;|[{]|$))  # assert that there exists at least one of `()`, `;`, `{`, or EOL
+      #
+      ([(][)])?  # in explicit declarations, the `()`s are optional
       \s*( ; )?
       \s*([{])?
 
-    captures:
-      '1': { name: storage.type.function.zsh                     } # `function`
-      '2': { name: constant.other.option.zsh                     } # `-T` ...
-      '3': { name: constant.other.option.end.zsh                 } # `--`
-      '4': { name: entity.name.function.zsh                      } # `name name2 name3` ...
-      '5': { name: punctuation.definition.function.brackets.zsh  } # `()`
-      '6': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
-      '7': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+    beginCaptures:
+      '1': { name: storage.type.function.zsh } # `function`
+
+    endCaptures:
+      '1': { name: punctuation.definition.function.brackets.zsh  } # `()`
+      '2': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
+      '3': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+
+    patterns:
+      - include: '#function_option'
+      - include: '#function_option_end'
+      - include: '#function_name'
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_option:
+    name: constant.other.option.zsh
+    match: '-T+'
+
+  function_option_end:
+    name: constant.other.option.end.zsh
+    match: '--'
+
+  function_name:
+    name: entity.name.function.zsh
+    match: |-
+      [^(){;\s]+
 
   # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_implicit:
-    name: meta.function.declaration.zsh
+    name: meta.function.declaration.implicit.zsh
     match: |-
       (?x)
       ((?: [^(){;\s]+ \s* )* )  # todo: add quoting rules
-      ( [(][)] )                # in implicit declarations, the `()` is mandatory
+      ( [(][)] )                # in implicit declarations, the `()`s are mandatory
       \s*( ; )?
       \s*([{])?
 
