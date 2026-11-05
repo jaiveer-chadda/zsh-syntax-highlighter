@@ -1,6 +1,6 @@
 ## @file syntaxes/zsh.tmLanguage.yaml
 
-"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
@@ -36,17 +36,14 @@ scopeName: source.zsh
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
 patterns:
-  - include: "#shebang"
-  - include: "#comment"
-  - include: "#builtin"
-  - include: "#function"
-  - include: "#semicolon"
+  - include: '#shebang'
+  - include: '#expression'
 
 repository:
 
   # yaml-embedded-languages: regex
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— shebang —————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   shebang: 
     name: meta.shebang.zsh
@@ -59,7 +56,18 @@ repository:
       '2': { name: meta.shebang.interpreter.zsh               }
       '3': { name: meta.shebang.args.zsh                      }
 
+  # —— [expression] ————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  expression:
+    patterns:
+      - include: '#comment'
+      - include: '#builtin'
+      - include: '#function'
+      - include: '#semicolon'
+      - include: '#closing_brace'
+
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— comment —————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   comment:
     name: comment.line.zsh
@@ -69,44 +77,67 @@ repository:
 
     captures: { '1': { name: punctuation.definition.comment.zsh } }
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— semicolon ———————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   semicolon:
     name: punctuation.terminator.semicolon.zsh
     match: ;
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— closing_brace ———————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  # function [ -T ] word ... [ () ] [ term ]  { list }
-  # function        word ... [ () ] [ term ] sublist
-  #                 word ...   ()   [ term ]  { list }
-  #                 word ...   ()   [ term ] command
+  closing_brace:
+    name: punctuation.section.block.end.brace.zsh
+    match: '[}]'
+
+  # —— [function] ——————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function:
     patterns:
-      - include: "#function_explicit"
-      - include: "#function_implicit"
+      - include: '#function_explicit'
+      - include: '#function_implicit'
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— function_explicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_explicit:
     name: meta.function.declaration.zsh
     match: |-
       (?x)
+      \b                  # todo: allow any statement terminator to precede the declaration, e.g., `&&`, `;`, `|`, etc.
       (function)
       ((?:\s+ -T+        )* )   # you can have as many `-T`s as you'd like apparently, and they can be `-TTT`s too!
        (?:\s+ (--)          )?  # optional `--`, however, it always has to come after the `-T`(s)
-      ((?:\s+ [^(){;\s]+ )* )   # todo: add quoting rules - e.g. ur allowed spaces in func names, but only if quoted
-       (?:\s* \(\)          )?
-      [;]?[{]?
+      ((?:\s+ [^(){;\s]+ )* )   # todo: add quoting rules, cos e.g. ur allowed spaces in func names, but only if quoted
+      (   \s* [(][)]        )?  # in explicit declarations, the `()` is optional
+      \s*( ; )?
+      \s*([{])?
 
     captures:
-      '1': { name: storage.type.function.zsh     }
-      '2': { name: constant.other.option.zsh     }
-      '3': { name: constant.other.option.end.zsh }
-      '4': { name: entity.name.function.zsh      }
+      '1': { name: storage.type.function.zsh                     } # `function`
+      '2': { name: constant.other.option.zsh                     } # `-T` ...
+      '3': { name: constant.other.option.end.zsh                 } # `--`
+      '4': { name: entity.name.function.zsh                      } # `name name2 name3` ...
+      '5': { name: punctuation.definition.function.brackets.zsh  } # `()`
+      '6': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
+      '7': { name: punctuation.section.block.begin.brace.zsh     } # `{`
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_implicit:
+    name: meta.function.declaration.zsh
+    match: |-
+      (?x)
+      ((?: [^(){;\s]+ \s* )* )  # todo: add quoting rules
+      ( [(][)] )                # in implicit declarations, the `()` is mandatory
+      \s*( ; )?
+      \s*([{])?
+
+    captures:
+      '1': { name: entity.name.function.zsh                      } # `name name2 name3` ...
+      '2': { name: punctuation.definition.function.brackets.zsh  } # `()`
+      '3': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
+      '4': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+
+  # —— builtin —————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   builtin:
     name: support.function.builtin.zsh
