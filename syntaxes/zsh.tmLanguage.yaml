@@ -113,7 +113,7 @@ repository:
       (?= \(\) | [{;] | $ )  # assert that there exists at least one of `()`, `;`, `{`, or EOL ## }
       (   \(\)  )?           # (in explicit declarations, the `()`s are optional)
       [ \t]*( ; )?
-      [ \t]*([{])?           # `{` technically isn't a terminator, but everything's a lot easier if I consider it one
+      [ \t]*([{])?           # `{` technically isn't a terminator, but everything's a lot easier if I consider it one }
 
     beginCaptures:
       '1': { name: storage.type.function.zsh } # `function`
@@ -127,25 +127,19 @@ repository:
       - include: '#function_options'
       - include: '#function_name'
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  # BUGS: hyphens in these positions aren't being highlighted correctly
-  #          ↓
-  # function -X () { body }
-  #          ↓↓
-  # function --X () { body }
+  # —— function_options ————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_options:
     begin: |-
       (?x)(?<=\bfunction\b) # ideally I would do `(?<=\bfunction(?=[ \t]))`, but it all breaks for some reason if I do
 
     end: |-
-      (?x)(?:         # end option parsing when ...
-        (?=[^-T \t])  #  - we're about to consume a character that isn't `-`, `T`, `␣`, or `\t`
+      (?x)(?:                         # end option parsing when ...
+        (?=-[^-T]|--[^ \t]|[^-T \t])  # - we're about to pass an invalid option, or something that's not an option
         |
-        (?<=--)       #  - or we just passed `--`
+        (?<=--)                       # - or we just passed `--`
         |
-        (?=           #  - or the function declaration is about to end
+        (?=                           # - or the function declaration is about to end
           (?=\(\)|[ \t]*(?:[{;]|$))
           (?:\(\))?
           [ \t]*(?: ; )?
@@ -156,7 +150,7 @@ repository:
     patterns:
       - include: '#function_option'
 
-  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— function_option —————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_option:
     name: constant.other.option.zsh
