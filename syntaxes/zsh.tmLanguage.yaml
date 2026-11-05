@@ -37,7 +37,7 @@ scopeName: source.zsh
 
 patterns:
   - include: '#shebang'
-  - include: '#expression'
+  - include: '#statement'
 
 repository:
 
@@ -45,20 +45,20 @@ repository:
 
   # —— shebang —————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  shebang: 
+  shebang:
     name: meta.shebang.zsh
     match: |-
       (?x)
-      ^([#]!)\s*(\S*)\s*(.*)$
+      ^([#]!)[ \t]*([^ \t]*)[ \t]*(.*)$
 
     captures:
       '1': { name: punctuation.definition.comment.shebang.zsh }
       '2': { name: meta.shebang.interpreter.zsh               }
       '3': { name: meta.shebang.args.zsh                      }
 
-  # —— [expression] ————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— [statement] —————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  expression:
+  statement:
     patterns:
       - include: '#comment'
       - include: '#builtin'
@@ -72,8 +72,7 @@ repository:
   comment:
     name: comment.line.zsh
     match: |-
-      (?x)
-      (?<=^|\s)([#]).*$
+      (?<=^|[ \t])(#).*$
 
     captures: { '1': { name: punctuation.definition.comment.zsh } }
 
@@ -105,15 +104,16 @@ repository:
     #  so that I can capture each name/option as its own element, rather than having all names be captured together
 
     begin: |-
-      \b(function)\b
+      (?x)
+      \b(function)       # the `function` keyword can either have a space, a semicolon, `()`, or EOL after it
+      (?=[ \t;]|\(\)|$)  #  nothing else is valid
 
     end: |-
       (?x)
-      (?=[(][)]|\s*(?:;|[{]|$))  # assert that there exists at least one of `()`, `;`, `{`, or EOL
-      #
-      ([(][)])?  # in explicit declarations, the `()`s are optional
-      \s*( ; )?
-      \s*([{])?
+      (?= \(\) | [{;] | $ )  # assert that there exists at least one of `()`, `;`, `{`, or EOL ## }
+      (   \(\)  )?           # (in explicit declarations, the `()`s are optional)
+      [ \t]*( ; )?
+      [ \t]*([{])?           # `{` technically isn't a terminator, but everything's a lot easier if I consider it one
 
     beginCaptures:
       '1': { name: storage.type.function.zsh } # `function`
@@ -124,24 +124,54 @@ repository:
       '3': { name: punctuation.section.block.begin.brace.zsh     } # `{`
 
     patterns:
-      - include: '#function_option'
-      - include: '#function_option_end'
+      - include: '#function_options'
       - include: '#function_name'
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  # BUGS: hyphens in these positions aren't being highlighted correctly
+  #          ↓
+  # function -X () { body }
+  #          ↓↓
+  # function --X () { body }
+
+  function_options:
+    begin: |-
+      (?x)(?<=\bfunction\b) # ideally I would do `(?<=\bfunction(?=[ \t]))`, but it all breaks for some reason if I do
+
+    end: |-
+      (?x)(?:         # end option parsing when ...
+        (?=[^-T \t])  #  - we're about to consume a character that isn't `-`, `T`, `␣`, or `\t`
+        |
+        (?<=--)       #  - or we just passed `--`
+        |
+        (?=           #  - or the function declaration is about to end
+          (?=\(\)|[ \t]*(?:[{;]|$))
+          (?:\(\))?
+          [ \t]*(?: ; )?
+          [ \t]*(?:[{])?
+        )
+      )
+
+    patterns:
+      - include: '#function_option'
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_option:
     name: constant.other.option.zsh
-    match: '-T+'
+    match: |-
+      (?x)
+      (?<=[ \t])
+      (?:-T+|(--))
+      (?=[ \t])
 
-  function_option_end:
-    name: constant.other.option.end.zsh
-    match: '--'
+    captures: { '1': { name: constant.other.option.end.zsh } } # `--`
 
   function_name:
     name: entity.name.function.zsh
     match: |-
-      [^(){;\s]+
+      [^(){; \t]+
 
   # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
@@ -149,10 +179,10 @@ repository:
     name: meta.function.declaration.implicit.zsh
     match: |-
       (?x)
-      ((?: [^(){;\s]+ \s* )* )  # todo: add quoting rules
-      ( [(][)] )                # in implicit declarations, the `()`s are mandatory
-      \s*( ; )?
-      \s*([{])?
+      ((?: [^(){; \t]+ [ \t]* )* )  # todo: add quoting rules
+      ( \(\) )                      # (in implicit declarations, the `()`s are mandatory)
+      [ \t]*( ; )?
+      [ \t]*([{])?
 
     captures:
       '1': { name: entity.name.function.zsh                      } # `name name2 name3` ...
@@ -165,7 +195,6 @@ repository:
   builtin:
     name: support.function.builtin.zsh
     match: |-
-      (?x)
-      (?<=(?:^|;|&&|[|]{1,2})\s*)echo
+      (?x) (?<=(?:^|;|&&|[|]{1,2})[ \t]*) echo
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
