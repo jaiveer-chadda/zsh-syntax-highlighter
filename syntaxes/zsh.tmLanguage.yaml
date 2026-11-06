@@ -64,7 +64,7 @@ repository:
       - include: '#builtin'
       - include: '#function'
       - include: '#semicolon'
-      - include: '#closing_brace'
+      - include: '#braced_scope'
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— comment —————————————————————————————————————————————————————————————————————————————————————————————————————— #
@@ -82,18 +82,28 @@ repository:
     name: punctuation.terminator.semicolon.zsh
     match: ;
 
-  # —— closing_brace ———————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  closing_brace:
-    name: punctuation.section.block.end.brace.zsh
-    match: '[}]'
-
   # —— builtin —————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   builtin:
     name: support.function.builtin.zsh
     match: |-
       (?x) (?<=(?:^|;|&&|[|]{1,2})[ \t]*) echo
+
+  # —— braced_scope ————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  braced_scope:
+    name: meta.scope.zsh
+
+    begin: '[{]'
+    end  : '[}]'
+
+    # applyEndPatternLast: 1
+
+    beginCaptures: { '0': { name: punctuation.definition.scope.begin.zsh } }
+    endCaptures  : { '0': { name: punctuation.definition.scope.end.zsh   } }
+
+    patterns:
+      - include: '#statement'
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
