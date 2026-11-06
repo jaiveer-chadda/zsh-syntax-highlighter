@@ -116,7 +116,7 @@ repository:
     name: meta.function.zsh
     patterns:
       - include: '#function_explicit_braced'
-      - include: '#function_implicit'
+      # - include: '#function_implicit'
 
   # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
@@ -141,7 +141,6 @@ repository:
   # if it was opened with `{`, a function body can only end with `}`
   # if it wasn't opened with `{`, a function body can end with `;` or a newline
 
-  # TODO: handle the case in which a function's body starts on the line after the initial declaration
   # TODO: handle EOL escaping
 
   function_explicit_braced:  # func-exp-braced
@@ -149,12 +148,18 @@ repository:
 
     begin: |-
       (?x)
-      \b(function)       # the `function` keyword can either have a space, a semicolon, `()`, or EOL
-      (?=[ \t;]|\(\)|$)  #  immediately after it - nothing else is valid
+      \b(function)      # the `function` keyword can either have a space, a semicolon, or `()` immediately after it
+      (?=[ \t;]|\(\))   #  nothing else is valid
 
     end: |-
-      (?x)
-      (?<=[}]|$|^|\n)
+      (?x)(?:
+        (?<=
+          [}]             # the function is ended by a closing brace
+          |
+          ^[ \t]*[^ \t{]  # or by a line that doesn't start with an opening brace (or is completely empty)
+        )
+        | (?<=\w)(?=\{)   # or by an opening brace with a word char before it
+      )
 
     beginCaptures:
       '1': { name: storage.type.function.zsh } # `function`
@@ -186,8 +191,17 @@ repository:
   braced_function_body:  # func-exp-braced, func-imp-braced
     name: meta.function.body.zsh
 
-    begin: '[{]'
-    end  : '[}]'
+    begin: |-
+      (?x)
+      (?<=
+        \bfunction\b[^\n]+
+        |
+        ^[ \t]*
+      )
+      (?<!\w)
+      [{]
+
+    end: '[}]'
 
     beginCaptures: { '0': { name: punctuation.definition.function.body.begin.zsh } }
     endCaptures  : { '0': { name: punctuation.definition.function.body.end.zsh   } }
@@ -210,7 +224,7 @@ repository:
       (?x)
       (?<=\bfunction\b.*?)        # must have `function` before it
       (?<!\bfunction\b.*?\(\).*?) # the function name cannot occur after `()`
-      [^(){; \t]+
+      [^(){}; \t]+
 
   # —— explicit_function_options ———————————————————————————————————————————————————————————————————————————————————— #
 
