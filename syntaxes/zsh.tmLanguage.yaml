@@ -37,7 +37,7 @@ scopeName: source.zsh
 
 patterns:
   - include: '#shebang'
-  - include: '#statement'
+  - include: '#root_context'
 
 repository:
 
@@ -56,9 +56,9 @@ repository:
       '2': { name: meta.shebang.interpreter.zsh               }
       '3': { name: meta.shebang.args.zsh                      }
 
-  # —— [statement] —————————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— [root_context] ——————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  statement:
+  root_context:
     patterns:
       - include: '#comment'
       - include: '#builtin'
@@ -94,16 +94,16 @@ repository:
   braced_scope:
     name: meta.scope.zsh
 
-    begin: '[{]'
+    begin: '(?<!\w)[{]'
     end  : '[}]'
-
-    # applyEndPatternLast: 1
 
     beginCaptures: { '0': { name: punctuation.definition.scope.begin.zsh } }
     endCaptures  : { '0': { name: punctuation.definition.scope.end.zsh   } }
 
+    applyEndPatternLast: 1
+
     patterns:
-      - include: '#statement'
+      - include: '#root_context'
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
@@ -112,15 +112,15 @@ repository:
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— [function] ——————————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function:
+  function:  # func-all
     name: meta.function.zsh
     patterns:
-      - include: '#function_explicit'
+      - include: '#function_explicit_braced'
       - include: '#function_implicit'
 
   # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function_implicit:
+  function_implicit:  # func-imp
     name: meta.function.implicit.zsh
     match: |-
       (?x)
@@ -136,44 +136,88 @@ repository:
       '4': { name: punctuation.section.block.begin.brace.zsh     } # `{`
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-  # —— function_explicit ———————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— function_explicit_braced ————————————————————————————————————————————————————————————————————————————————————— #
 
-  function_explicit:
+  # if it was opened with `{`, a function body can only end with `}`
+  # if it wasn't opened with `{`, a function body can end with `;` or a newline
+
+  # TODO: handle the case in which a function's body starts on the line after the initial declaration
+  # TODO: handle EOL escaping
+
+  function_explicit_braced:  # func-exp-braced
     name: meta.function.explicit.zsh
-
-    # I'm using `begin` and `end` here, rather than `match`,
-    #  so that I can capture each name/option as its own element, rather than having all names be captured together
 
     begin: |-
       (?x)
-      \b(function)       # the `function` keyword can either have a space, a semicolon, `()`, or EOL after it
-      (?=[ \t;]|\(\)|$)  #  nothing else is valid
+      \b(function)       # the `function` keyword can either have a space, a semicolon, `()`, or EOL
+      (?=[ \t;]|\(\)|$)  #  immediately after it - nothing else is valid
 
     end: |-
       (?x)
-      (?= \(\) | [{;] | $ )  # assert that there exists at least one of `()`, `;`, `{`, or EOL ## }
-      (   \(\)  )?           # (in explicit declarations, the `()`s are optional)
-      [ \t]*( ; )?
-      [ \t]*([{])?           # `{` technically isn't a terminator, but everything's a lot easier if I consider it one }
+      (?<=[}]|$|^|\n)
 
     beginCaptures:
       '1': { name: storage.type.function.zsh } # `function`
 
-    endCaptures:
-      '1': { name: punctuation.definition.function.brackets.zsh  } # `()`
-      '2': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
-      '3': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+    applyEndPatternLast: 1
 
     patterns:
-      - include: '#function_options'
-      - include: '#function_name'
+      - include: '#explicit_function_options'  # `-T --`
+      - include: '#explicit_function_name'     # `name`
+      - include: '#function_brackets'          # `()`
+      - include: '#function_semicolon'         # `;`
+      - include: '#braced_function_body'       # `{ ... }`
+
+  # —— function_brackets ———————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_brackets:  # func-all
+    name: punctuation.definition.function.brackets.zsh
+    match: '[(][)]'
+
+  # —— function_semicolon ——————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_semicolon:  # func-all
+    name: punctuation.definition.function.semicolon.zsh
+    match: ';'
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-  # —— function_options ————————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— braced_function_body ————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function_options:
+  braced_function_body:  # func-exp-braced, func-imp-braced
+    name: meta.function.body.zsh
+
+    begin: '[{]'
+    end  : '[}]'
+
+    beginCaptures: { '0': { name: punctuation.definition.function.body.begin.zsh } }
+    endCaptures  : { '0': { name: punctuation.definition.function.body.end.zsh   } }
+
+    applyEndPatternLast: 1
+
+    patterns:
+      - include: '#root_context'
+
+  # —— explicit_function_name ——————————————————————————————————————————————————————————————————————————————————————— #
+
+  explicit_function_name:  # func-exp-braced, func-exp-short
+    name: entity.name.function.zsh
+
+    # note: this might cause some issues with a line like:
+    #  `function name1 () { body } ; function name2 () { body2 }`,
+    # since `name2` technically occurs after a `()`
+
+    match: |-
+      (?x)
+      (?<=\bfunction\b.*?)        # must have `function` before it
+      (?<!\bfunction\b.*?\(\).*?) # the function name cannot occur after `()`
+      [^(){; \t]+
+
+  # —— explicit_function_options ———————————————————————————————————————————————————————————————————————————————————— #
+
+  explicit_function_options:  # func-exp-braced, func-exp-short
+    name: constant.other.options.function.debug.zsh
     begin: |-
-      (?x)(?<=\bfunction\b) # ideally I would do `(?<=\bfunction(?=[ \t]))`, but it all breaks for some reason if I do
+      (?x)(?<=\bfunction\b)(?=[ \t])  # the `(?=[ \t])` prevents it trying to parse options in cases like `function()`
 
     end: |-
       (?x)(?:                         # end option parsing when ...
@@ -181,12 +225,7 @@ repository:
         |
         (?<=--)                       # - or we just passed `--`
         |
-        (?=                           # - or the function declaration is about to end
-          (?=\(\)|[ \t]*(?:[{;]|$))
-          (?:\(\))?
-          [ \t]*(?: ; )?
-          [ \t]*(?:[{])?
-        )
+        (?= \(\) | [;{] )             # - or the function declaration is about to end
       )
 
     patterns:
@@ -194,7 +233,7 @@ repository:
 
   # —— function_option —————————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function_option:
+  function_option:  # func-exp-braced, func-exp-short
     name: constant.other.option.zsh
     match: |-
       (?x)
@@ -203,12 +242,5 @@ repository:
       (?=[ \t])
 
     captures: { '1': { name: constant.other.option.end.zsh } } # `--`
-
-  # —— function_name ———————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  function_name:
-    name: entity.name.function.zsh
-    match: |-
-      [^(){; \t]+
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
