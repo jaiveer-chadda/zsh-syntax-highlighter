@@ -88,17 +88,48 @@ repository:
     name: punctuation.section.block.end.brace.zsh
     match: '[}]'
 
+  # —— builtin —————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  builtin:
+    name: support.function.builtin.zsh
+    match: |-
+      (?x) (?<=(?:^|;|&&|[|]{1,2})[ \t]*) echo
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  # —— —— Functions —— —————————————————————————————————————————————————————————————————————————————————————————————— #
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— [function] ——————————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function:
+    name: meta.function.zsh
     patterns:
       - include: '#function_explicit'
       - include: '#function_implicit'
 
+  # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
+
+  function_implicit:
+    name: meta.function.implicit.zsh
+    match: |-
+      (?x)
+      ((?: [^(){; \t]+ [ \t]* )* )  # todo: add quoting rules
+      ( \(\) )                      # (in implicit declarations, the `()`s are mandatory)
+      [ \t]*( ; )?
+      [ \t]*([{])?
+    #
+    captures:
+      '1': { name: entity.name.function.zsh                      } # `name name2 name3` ...
+      '2': { name: punctuation.definition.function.brackets.zsh  } # `()`
+      '3': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
+      '4': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— function_explicit ———————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_explicit:
-    name: meta.function.declaration.explicit.zsh
+    name: meta.function.explicit.zsh
 
     # I'm using `begin` and `end` here, rather than `match`,
     #  so that I can capture each name/option as its own element, rather than having all names be captured together
@@ -127,6 +158,7 @@ repository:
       - include: '#function_options'
       - include: '#function_name'
 
+  # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— function_options ————————————————————————————————————————————————————————————————————————————————————————————— #
 
   function_options:
@@ -162,33 +194,11 @@ repository:
 
     captures: { '1': { name: constant.other.option.end.zsh } } # `--`
 
+  # —— function_name ———————————————————————————————————————————————————————————————————————————————————————————————— #
+
   function_name:
     name: entity.name.function.zsh
     match: |-
       [^(){; \t]+
-
-  # —— function_implicit ———————————————————————————————————————————————————————————————————————————————————————————— #
-
-  function_implicit:
-    name: meta.function.declaration.implicit.zsh
-    match: |-
-      (?x)
-      ((?: [^(){; \t]+ [ \t]* )* )  # todo: add quoting rules
-      ( \(\) )                      # (in implicit declarations, the `()`s are mandatory)
-      [ \t]*( ; )?
-      [ \t]*([{])?
-
-    captures:
-      '1': { name: entity.name.function.zsh                      } # `name name2 name3` ...
-      '2': { name: punctuation.definition.function.brackets.zsh  } # `()`
-      '3': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
-      '4': { name: punctuation.section.block.begin.brace.zsh     } # `{`
-
-  # —— builtin —————————————————————————————————————————————————————————————————————————————————————————————————————— #
-
-  builtin:
-    name: support.function.builtin.zsh
-    match: |-
-      (?x) (?<=(?:^|;|&&|[|]{1,2})[ \t]*) echo
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
