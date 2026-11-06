@@ -3,31 +3,64 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
-
 # All Fields
 # ‾‾‾‾‾‾‾‾‾‾
-# name                : string    // the name which gets assigned to the portion matched. This is used for styling and scope-specific settings and actions, which means it should generally be derived from one of the standard names.
-# contentName         : string    // this key is similar to the name key but only assigns the name to the text between what is matched by the begin/end patterns.
+# name                : string    // the name which gets assigned to the portion matched.
+#                                     This is used for styling and scope-specific settings and actions,
+#                                     which means it should generally be derived from one of the standard names.
+#
+# contentName         : string    // this key is similar to the name key but only assigns the name to the text between
+#                                     what is matched by the begin/end patterns.
+#
 # disabled            : int-bool  // set this property to 1 to disable the current pattern
+#
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 #
 # comment             : string    // just a comment - nothing special about it
 #
-# match               : string    // a regular expression which is used to identify the portion of text to which the name should be assigned. Example: '\b(true|false)\b'.
-# captures            : object    // allows you to assign attributes to the captures of the match pattern. Using the captures key for a begin/end rule is short-hand for giving both beginCaptures and endCaptures with same values.
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 #
-# begin               : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and end is the pattern which ends the block. Captures from the begin pattern can be referenced in the end pattern by using normal regular expression back-references. This is often used with here-docs. A begin/end rule can have nested patterns using the patterns key.
-# end                 : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and end is the pattern which ends the block. Captures from the begin pattern can be referenced in the end pattern by using normal regular expression back-references. This is often used with here-docs. A begin/end rule can have nested patterns using the patterns key.
-# while               : string    // these keys allow matches which span several lines and must both be mutually exclusive with the match key. Each is a regular expression pattern. begin is the pattern that starts the block and while continues it.
+# match               : string    // a regular expression which is used to identify the portion of text to which the
+#                                     name should be assigned. Example: '\b(true|false)\b'.
+# captures            : object    // allows you to assign attributes to the captures of the match pattern.
+#                                     Using the captures key for a begin/end rule is short-hand for giving both
+#                                     beginCaptures and endCaptures with the same values.
 #
-# beginCaptures       : object    // allows you to assign attributes to the captures of the begin pattern. Using the captures key for a begin/end   rule is short-hand for giving both beginCaptures and endCaptures   with same values.
-# endCaptures         : object    // allows you to assign attributes to the captures of the end   pattern. Using the captures key for a begin/end   rule is short-hand for giving both beginCaptures and endCaptures   with same values.
-# whileCaptures       : object    // allows you to assign attributes to the captures of the while pattern. Using the captures key for a begin/while rule is short-hand for giving both beginCaptures and whileCaptures with same values.
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+#
+# begin               : string    // these keys allow matches which span several lines and must both be mutually
+#                                     exclusive with the match key. Each is a regular expression pattern.
+#                                     `begin` is the pattern that starts the block and `end` ends the block.
+#                                     Captures from the begin pattern can be referenced in the end pattern by using
+#                                     normal regular expression back-references. This is often used with here-docs.
+#                                     A begin/end rule can have nested patterns using the patterns key.
+# end                 : string
+# while               : string    // `begin` is the pattern that starts the block and `while` continues it.
+#
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+#
+# beginCaptures       : object    // allows you to assign attributes to the captures of the begin pattern.
+#                                     Using the captures key for a begin/end   rule is short-hand for giving both
+#                                     beginCaptures and endCaptures   with the same values.
+#
+# endCaptures         : object    // allows you to assign attributes to the captures of the end   pattern.
+#                                     Using the captures key for a begin/end   rule is short-hand for giving both
+#                                     beginCaptures and endCaptures   with the same values.
+#
+# whileCaptures       : object    // allows you to assign attributes to the captures of the while pattern.
+#                                     Using the captures key for a begin/while rule is short-hand for giving both
+#                                     beginCaptures and whileCaptures with the same values.
+#
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 #
 # patterns            : array     // applies to the region between the begin and end matches
 #
-# applyEndPatternLast : int-bool
-# include             : string    // this allows you to reference a different language, recursively reference the grammar itself or a rule declared in this file’s repository.
-
+# ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
+#
+# applyEndPatternLast : int-bool  // de-prioritise matching `end`, as opposed to the `#include` patterns.
+#
+# include             : string    // this allows you to reference a different language, recursively reference the
+#                                     grammar itself, or reference a rule declared in this file’s repository.
 # ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
 
 name: zsh
@@ -128,10 +161,10 @@ repository:
       [ \t]*([{])?
     #
     captures:
-      '1': { name: entity.name.function.zsh                      } # `name name2 name3` ...
-      '2': { name: punctuation.definition.function.brackets.zsh  } # `()`
-      '3': { name: punctuation.section.block.begin.semicolon.zsh } # `;`
-      '4': { name: punctuation.section.block.begin.brace.zsh     } # `{`
+      '1': { name: entity.name.function.zsh                        } # `name name2 name3` ...
+      '2': { name: punctuation.definition.function.parentheses.zsh } # `()`
+      '3': { name: punctuation.section.block.begin.semicolon.zsh   } # `;`
+      '4': { name: punctuation.section.block.begin.brace.zsh       } # `{`
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— function_explicit_braced ————————————————————————————————————————————————————————————————————————————————————— #
@@ -147,7 +180,7 @@ repository:
     begin: |-
       (?x)
       \b(function)      # the `function` keyword can either have a space, a semicolon, or `()` immediately after it
-      (?=[ \t;]|\(\))   #  nothing else is valid
+      (?=[ \t;]|\(\)|$) #  nothing else is valid, except EOL, in which case the next line has to start w an open brace
 
     end: |-
       (?x)(?:
@@ -165,14 +198,15 @@ repository:
     patterns:
       - include: '#explicit_function_options'  # `-T --`
       - include: '#explicit_function_name'     # `name`
-      - include: '#function_brackets'          # `()`
+      - include: '#function_parentheses'       # `()`
       - include: '#function_semicolon'         # `;`
       - include: '#braced_function_body'       # `{ ... }`
+      - include: '#line_continuation'          # `\↩`
 
-  # —— function_brackets ———————————————————————————————————————————————————————————————————————————————————————————— #
+  # —— function_parentheses ————————————————————————————————————————————————————————————————————————————————————————— #
 
-  function_brackets:  # func-all
-    name: punctuation.definition.function.brackets.zsh
+  function_parentheses:  # func-all
+    name: punctuation.definition.function.parentheses.zsh
     match: '[(][)]'
 
   # —— function_semicolon ——————————————————————————————————————————————————————————————————————————————————————————— #
@@ -180,6 +214,18 @@ repository:
   function_semicolon:  # func-all
     name: punctuation.definition.function.semicolon.zsh
     match: ';'
+
+  # —— line_continuation ———————————————————————————————————————————————————————————————————————————————————————————— #
+
+  # [not implemented yet]
+  line_continuation:  # func-all
+    name: constant.character.escape.line-continuation.zsh
+    match: |-
+      (?x)       # we need an odd number of backslashes, so:
+      (?<!\\)    # - assert that this is the start of the series of backslashes
+      (?:\\\\)*  # - then any even number of backslashes
+      \\         # - then one final backslash
+      (?=\n)     # - immediately followed by a newline
 
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— braced_function_body ————————————————————————————————————————————————————————————————————————————————————————— #
@@ -212,7 +258,7 @@ repository:
     match: |-
       (?x)
       (?<!\(\).*?)  # the function name cannot occur after `()`
-      [^(){}; \t]+
+      [^(){}; \t\\]+
 
   # —— explicit_function_options ———————————————————————————————————————————————————————————————————————————————————— #
 
