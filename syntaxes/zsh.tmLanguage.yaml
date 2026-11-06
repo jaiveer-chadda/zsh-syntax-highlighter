@@ -100,8 +100,6 @@ repository:
     beginCaptures: { '0': { name: punctuation.definition.scope.begin.zsh } }
     endCaptures  : { '0': { name: punctuation.definition.scope.end.zsh   } }
 
-    applyEndPatternLast: 1
-
     patterns:
       - include: '#root_context'
 
@@ -138,10 +136,10 @@ repository:
   # ————————————————————————————————————————————————————————————————————————————————————————————————————————————————— #
   # —— function_explicit_braced ————————————————————————————————————————————————————————————————————————————————————— #
 
-  # if it was opened with `{`, a function body can only end with `}`
-  # if it wasn't opened with `{`, a function body can end with `;` or a newline
+  # if it was    opened with `{`, a function body can only end with `}`
+  # if it wasn't opened with `{`, a function body can only end with `;` or a newline
 
-  # TODO: handle EOL escaping
+  # TODO: handle line continuations
 
   function_explicit_braced:  # func-exp-braced
     name: meta.function.explicit.zsh
@@ -163,8 +161,6 @@ repository:
 
     beginCaptures:
       '1': { name: storage.type.function.zsh } # `function`
-
-    applyEndPatternLast: 1
 
     patterns:
       - include: '#explicit_function_options'  # `-T --`
@@ -193,11 +189,6 @@ repository:
 
     begin: |-
       (?x)
-      (?<=
-        \bfunction\b[^\n]+
-        |
-        ^[ \t]*
-      )
       (?<!\w)
       [{]
 
@@ -205,8 +196,6 @@ repository:
 
     beginCaptures: { '0': { name: punctuation.definition.function.body.begin.zsh } }
     endCaptures  : { '0': { name: punctuation.definition.function.body.end.zsh   } }
-
-    applyEndPatternLast: 1
 
     patterns:
       - include: '#root_context'
@@ -222,24 +211,27 @@ repository:
 
     match: |-
       (?x)
-      (?<=\bfunction\b.*?)        # must have `function` before it
-      (?<!\bfunction\b.*?\(\).*?) # the function name cannot occur after `()`
+      (?<!\(\).*?)  # the function name cannot occur after `()`
       [^(){}; \t]+
 
   # —— explicit_function_options ———————————————————————————————————————————————————————————————————————————————————— #
 
   explicit_function_options:  # func-exp-braced, func-exp-short
-    name: constant.other.options.function.debug.zsh
+    name: constant.other.options.function.DEBUG.zsh
     begin: |-
-      (?x)(?<=\bfunction\b)(?=[ \t])  # the `(?=[ \t])` prevents it trying to parse options in cases like `function()`
+      (?x) (?=[ \t])       # the `(?=[ \t])` prevents it from trying to parse options in cases like `function()`
 
     end: |-
-      (?x)(?:                         # end option parsing when ...
-        (?=-[^-T]|--[^ \t]|[^-T \t])  # - we're about to pass an invalid option, or something that's not an option
+      (?x)(?:              # end option parsing when ...
+        [ \t](?=           # - we're at a space, and are about to pass ...
+          -[^-T]           #   - a `-`  option that isn't `-T` or `--`
+          | --[^ \t]       #   - a `--` option that isn't `--␣`
+          | [^-T \t]       #   - a word that doesn't start with a hyphen
+        )
         |
-        (?<=--)                       # - or we just passed `--`
+        (?<=--)            # - or we just passed `--`
         |
-        (?= \(\) | [;{] )             # - or the function declaration is about to end
+        (?= \(\) | [;{] )  # - or the function declaration is about to end
       )
 
     patterns:
